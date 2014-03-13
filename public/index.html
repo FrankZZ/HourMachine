@@ -1,21 +1,38 @@
 <!doctype html>
-<html lang="en" ng-app="HourMachineApp">
-    <head>
-        <meta charset="utf-8">
-        <title>HourMachine</title>
-        <link rel="stylesheet" href="css/app.css">
+<html lang="en" ng-app="hourMachineApp">
+<head>
+  <meta charset="utf-8">
+  <title>Google Phone Gallery</title>
+  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="lib/bootstrap-3.1.1-dist/css/bootstrap.css">
 
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular.min.js"></script>
+  <script src="lib/jquery-1.11.0/jquery-1.11.0.js"></script>
+  <script src="lib/bootstrap-3.1.1-dist/js/bootstrap.js"></script>
+  <script src="lib/angular-1.2.13/angular.js"></script>
+  <script src="lib/angular-1.2.13/angular-animate.js"></script>
+  <script src="lib/angular-1.2.13/angular-resource.js"></script>
+  <script src="lib/angular-1.2.13/angular-route.js"></script>
 
-        <script src="js/app.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/directives.js"></script>
+  <script src="js/animations.js"></script>
+  <script src="js/controllers.js"></script>
+  <script src="js/filters.js"></script>
+  <script src="js/services.js"></script>
+</head>
+<body>
+    <ul class="menu">
+        <li><a href="#/login">login</a></li>
+        <li><a href="#/projects">projects</a></li>
+        <li><a href="#/tasks">tasks</a></li>
+        <li><a href="#/performs">performs</a></li>
+        <li><a href="#/addproject">addproject</a></li>
+        <li><a href="#/addpreform">addpreform</a></li>
+        <li><a href="#/addtask">addtask</a></li>
+    </ul>
+  <div class="view-container">
+    <div ng-view class="view-frame"></div>
+  </div>
 
-    </head>
-    <body>
-
-        <div class="view-container">
-            <div ng-view class="view-frame"></div>
-        </div>
-
-    </body>
+</body>
 </html>
