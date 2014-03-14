@@ -2,7 +2,7 @@
 
 /* Controllers */
 
-var hourMachineControllers = angular.module('hourMachineControllers', ['ui.bootstrap']);
+var hourMachineControllers = angular.module('hourMachineControllers', []);
 
 hourMachineControllers.controller('MainCtrl', ['$scope', '$routeParams', 'Phone',function($scope, $routeParams, Phone) {
 
@@ -23,73 +23,45 @@ hourMachineControllers.controller('NavHeaderController', ['$scope', '$location',
 }]);
 hourMachineControllers.controller('AddController', ['$scope', '$modal', '$log',function($scope, $modal, $log) {
     $scope.addProject = function () {
-        var modalInstance = $modal.open({
-            templateUrl: '/partials/addproject.html',
-            controller: function ($scope, $modalInstance) {
-                $scope.project = {name : ''};
-
-                $scope.add = function () {
-                    $modalInstance.close($scope.project.name);
-                };
-
-                $scope.cancel = function () {
-                    $modalInstance.dismiss('cancel');
-                };
-            }
-        });
-
-        modalInstance.result.then(function(name){
+        addModal($scope, $modal, $log,"Project", function(name){
             $scope.selected = name;
-        },function(){
-            $scope.selected = 'You decided not to enter in your name, that makes me sad.';
         });
     };
 
     $scope.addTask = function () {
-        var modalInstance = $modal.open({
-            templateUrl: '/partials/addtask.html',
-            controller: function ($scope, $modalInstance) {
-                $scope.project = {name : ''};
-
-                $scope.add = function () {
-                    $modalInstance.close($scope.project.name);
-                };
-
-                $scope.cancel = function () {
-                    $modalInstance.dismiss('cancel');
-                };
-            }
-        });
-
-        modalInstance.result.then(function(name){
+        addModal($scope, $modal, $log,"Task", function(name){
             $scope.selected = name;
-        },function(){
-            $scope.selected = 'You decided not to enter in your name, that makes me sad.';
         });
     };
 
     $scope.addPerform = function () {
-        var modalInstance = $modal.open({
-            templateUrl: '/partials/addperform.html',
-            controller: function ($scope, $modalInstance) {
-                $scope.project = {name : ''};
-
-                $scope.add = function () {
-                    $modalInstance.close($scope.project.name);
-                };
-
-                $scope.cancel = function () {
-                    $modalInstance.dismiss('cancel');
-                };
-            }
-        });
-
-        modalInstance.result.then(function(name){
+        addModal($scope, $modal, $log,"Perform", function(name){
             $scope.selected = name;
-        },function(){
-            $scope.selected = 'You decided not to enter in your name, that makes me sad.';
-        });
+        })
     };
 }]);
 
+function addModal($scope, $modal, $log, title, callback){
+    var modalInstance = $modal.open({
+        templateUrl: '/partials/add.html',
+        controller: function ($scope, $modalInstance) {
+            $scope.title = title;
+            $scope.data = {name : ''};
+
+            $scope.add = function () {
+                $modalInstance.close($scope.data.name);
+            };
+
+            $scope.cancel = function () {
+                $modalInstance.dismiss('cancel');
+            };
+        }
+    });
+
+    modalInstance.result.then(function(name){
+        callback(name);
+    },function(){
+        callback('You decided not to enter in your name, that makes me sad.');
+    });
+};
 
