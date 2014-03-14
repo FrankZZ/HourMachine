@@ -8,7 +8,8 @@ var hourMachineApp = angular.module('hourMachineApp', [
 
   'hourMachineControllers',
   'hourMachineFilters',
-  'hourMachineServices'
+  'hourMachineServices',
+  'ui.bootstrap'
 ]);
 
 hourMachineApp.config(['$routeProvider',
@@ -30,19 +31,8 @@ hourMachineApp.config(['$routeProvider',
             templateUrl: 'partials/performs.html',
             controller: 'MainCtrl'
         }).
-        when('/addproject', {
-            templateUrl: 'partials/addproject.html',
-            controller: 'MainCtrl'
-        }).
-        when('/addpreform', {
-            templateUrl: 'partials/addpreform.html',
-            controller: 'MainCtrl'
-        }).
-        when('/addtask', {
-            templateUrl: 'partials/addtask.html',
-            controller: 'MainCtrl'
-        }).
         otherwise({
         redirectTo: '/login'
         });
   }]);
+

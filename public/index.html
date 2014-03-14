@@ -2,16 +2,20 @@
 <html lang="en" ng-app="hourMachineApp">
 <head>
   <meta charset="utf-8">
-  <title>Google Phone Gallery</title>
+  <title>HourMachine</title>
   <link rel="stylesheet" href="css/app.css">
   <link rel="stylesheet" href="lib/bootstrap-3.1.1-dist/css/bootstrap.css">
 
   <script src="lib/jquery-1.11.0/jquery-1.11.0.js"></script>
-  <script src="lib/bootstrap-3.1.1-dist/js/bootstrap.js"></script>
+
   <script src="lib/angular-1.2.13/angular.js"></script>
   <script src="lib/angular-1.2.13/angular-animate.js"></script>
   <script src="lib/angular-1.2.13/angular-resource.js"></script>
   <script src="lib/angular-1.2.13/angular-route.js"></script>
+
+  <script src="lib/ui-bootstrap-tpls-0.10.0.js"></script>
+
+  <script src="lib/bootstrap-3.1.1-dist/js/bootstrap.js"></script>
 
   <script src="js/app.js"></script>
   <script src="js/directives.js"></script>
@@ -21,18 +25,49 @@
   <script src="js/services.js"></script>
 </head>
 <body>
-    <ul class="menu">
-        <li><a href="#/login">login</a></li>
-        <li><a href="#/projects">projects</a></li>
-        <li><a href="#/tasks">tasks</a></li>
-        <li><a href="#/performs">performs</a></li>
-        <li><a href="#/addproject">addproject</a></li>
-        <li><a href="#/addpreform">addpreform</a></li>
-        <li><a href="#/addtask">addtask</a></li>
+<nav>
+    <ul>
+        <li></li>
+        <li></li>
+        <li></li>
     </ul>
+</nav>
+    <div class="btn-group">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-align-justify"></span></button>
+        <ul class="dropdown-menu" role="menu">
+            <li><a href="#/login">login</a></li>
+            <li class="divider"></li>
+            <li><a href="#/projects">projects</a></li>
+            <li><a href="#/tasks">tasks</a></li>
+            <li><a href="#/performs">performs</a></li>
+            <li class="divider"></li>
+        </ul>
+    </div>
+    <div ng-controller="AddProjectController">
+        <button class="btn btn-default" ng-click="open()"><span class="glyphicon glyphicon-plus"></span></button>
+        <div ng-show="selected">Name: {{ selected }}</div>
+    </div>
+    <div ng-controller="AddTaskController">
+        <button class="btn btn-default" ng-click="open()"><span class="glyphicon glyphicon-plus"></span></button>
+        <div ng-show="selected">Name: {{ selected }}</div>
+    </div>
+    <div ng-controller="AddPerformController">
+        <button class="btn btn-default" ng-click="open()"><span class="glyphicon glyphicon-plus"></span></button>
+        <div ng-show="selected">Name: {{ selected }}</div>
+    </div>
+<!--
+    <div ng-controller="AlertDemoCtrl">
+        <alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
+        <button class='btn btn-default' ng-click="addAlert()">Add Alert</button>
+    </div>
+    <div ng-controller="AddProjectController">
+        <button ng-click="openAddProjectDialog()">Click</button>
+        <p>New project name {{newProjectName}}</p>
+    </div>
+    -->
+<hr/>
   <div class="view-container">
     <div ng-view class="view-frame"></div>
   </div>
-
 </body>
 </html>
