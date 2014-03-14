@@ -7,10 +7,22 @@ var hourMachineControllers = angular.module('hourMachineControllers', ['ui.boots
 hourMachineControllers.controller('MainCtrl', ['$scope', '$routeParams', 'Phone',function($scope, $routeParams, Phone) {
 
  }]);
-
-hourMachineControllers.controller('AddProjectController', ['$scope', '$modal', '$log',function($scope, $modal, $log) {
-    $scope.open = function () {
-
+hourMachineControllers.controller('NavHeaderController', ['$scope', '$location',function($scope, $location) {
+    $scope.isActive = function (viewLocation) {
+        return viewLocation === $location.path();
+    };
+    $scope.isNew = function () {
+        if($location.path() === "/tasks"){
+            $scope.addTask();
+        }else if($location.path() === "/projects"){
+            $scope.addProject();
+        }else if($location.path() === "/performs"){
+            $scope.addPerform();
+        }
+    };
+}]);
+hourMachineControllers.controller('AddController', ['$scope', '$modal', '$log',function($scope, $modal, $log) {
+    $scope.addProject = function () {
         var modalInstance = $modal.open({
             templateUrl: '/partials/addproject.html',
             controller: function ($scope, $modalInstance) {
@@ -32,10 +44,8 @@ hourMachineControllers.controller('AddProjectController', ['$scope', '$modal', '
             $scope.selected = 'You decided not to enter in your name, that makes me sad.';
         });
     };
-}]);
-hourMachineControllers.controller('AddTaskController', ['$scope', '$modal', '$log',function($scope, $modal, $log) {
-    $scope.open = function () {
 
+    $scope.addTask = function () {
         var modalInstance = $modal.open({
             templateUrl: '/partials/addtask.html',
             controller: function ($scope, $modalInstance) {
@@ -57,10 +67,8 @@ hourMachineControllers.controller('AddTaskController', ['$scope', '$modal', '$lo
             $scope.selected = 'You decided not to enter in your name, that makes me sad.';
         });
     };
-}]);
-hourMachineControllers.controller('AddPerformController', ['$scope', '$modal', '$log',function($scope, $modal, $log) {
-    $scope.open = function () {
 
+    $scope.addPerform = function () {
         var modalInstance = $modal.open({
             templateUrl: '/partials/addperform.html',
             controller: function ($scope, $modalInstance) {
@@ -83,4 +91,5 @@ hourMachineControllers.controller('AddPerformController', ['$scope', '$modal', '
         });
     };
 }]);
+
 

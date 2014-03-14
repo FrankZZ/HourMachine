@@ -25,49 +25,56 @@
   <script src="js/services.js"></script>
 </head>
 <body>
-<nav>
-    <ul>
-        <li></li>
-        <li></li>
-        <li></li>
-    </ul>
-</nav>
-    <div class="btn-group">
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-align-justify"></span></button>
-        <ul class="dropdown-menu" role="menu">
-            <li><a href="#/login">login</a></li>
-            <li class="divider"></li>
-            <li><a href="#/projects">projects</a></li>
-            <li><a href="#/tasks">tasks</a></li>
-            <li><a href="#/performs">performs</a></li>
-            <li class="divider"></li>
-        </ul>
-    </div>
-    <div ng-controller="AddProjectController">
-        <button class="btn btn-default" ng-click="open()"><span class="glyphicon glyphicon-plus"></span></button>
+    <div ng-controller="AddController">
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">HourMachine</a>
+                    <!--<div id="add-button" class="navbar-text glyphicon glyphicon-plus-sign"></div>-->
+                    <!--<button class="btn btn-default navbar-btn" ng-click="addProject()"><span class="glyphicon glyphicon-plus"></span></button>-->
+                </div>
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" ng-controller="NavHeaderController">
+                    <button class="btn btn-success navbar-btn" ng-click="isNew()">NEW</button>
+                    <div class="btn-group" data-toggle="buttons">
+                        <label class="btn btn-default navbar-btn active">
+                            <input type="radio" name="options" id="day"> Day
+                        </label>
+                        <label class="btn btn-default navbar-btn">
+                            <input type="radio" name="options" id="week"> Week
+                        </label>
+                        <label class="btn btn-default navbar-btn">
+                            <input type="radio" name="options" id="month"> Month
+                        </label>
+                        <label class="btn btn-default navbar-btn">
+                            <input type="radio" name="options" id="year"> Year
+                        </label>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-chevron-left"></span></button>
+                        <button type="button" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-calendar"></span></button>
+                        <button type="button" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-chevron-right"></span></button>
+                    </div>
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li ng-class="{ active: isActive('/login')}"><a href="#/login">Login</a></li>
+                        <li ng-class="{ active: isActive('/projects')}"><a href="#/projects">Projects</a></li>
+                        <li ng-class="{ active: isActive('/tasks')}"><a href="#/tasks">Tasks</a></li>
+                        <li ng-class="{ active: isActive('/performs')}"><a href="#/performs">Performs</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
         <div ng-show="selected">Name: {{ selected }}</div>
     </div>
-    <div ng-controller="AddTaskController">
-        <button class="btn btn-default" ng-click="open()"><span class="glyphicon glyphicon-plus"></span></button>
-        <div ng-show="selected">Name: {{ selected }}</div>
+
+    <div class="view-container">
+        <div ng-view class="view-frame"></div>
     </div>
-    <div ng-controller="AddPerformController">
-        <button class="btn btn-default" ng-click="open()"><span class="glyphicon glyphicon-plus"></span></button>
-        <div ng-show="selected">Name: {{ selected }}</div>
-    </div>
-<!--
-    <div ng-controller="AlertDemoCtrl">
-        <alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
-        <button class='btn btn-default' ng-click="addAlert()">Add Alert</button>
-    </div>
-    <div ng-controller="AddProjectController">
-        <button ng-click="openAddProjectDialog()">Click</button>
-        <p>New project name {{newProjectName}}</p>
-    </div>
-    -->
-<hr/>
-  <div class="view-container">
-    <div ng-view class="view-frame"></div>
-  </div>
 </body>
 </html>
