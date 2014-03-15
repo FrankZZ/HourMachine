@@ -23,30 +23,30 @@ hourMachineControllers.controller('NavHeaderController', ['$scope', '$location',
 }]);
 hourMachineControllers.controller('AddController', ['$scope', '$modal', '$log',function($scope, $modal, $log) {
     $scope.addProject = function () {
-        addModal($scope, $modal, $log,"Project", function(name){
+        addEditModal($scope, $modal, $log,"Project", '',function(name){
             $scope.selected = name;
         });
     };
 
     $scope.addTask = function () {
-        addModal($scope, $modal, $log,"Task", function(name){
+        addEditModal($scope, $modal, $log,"Task",'',function(name){
             $scope.selected = name;
         });
     };
 
     $scope.addPerform = function () {
-        addModal($scope, $modal, $log,"Perform", function(name){
-            $scope.selected = name;
-        })
+        addEditPerformModal($scope, $modal, $log,"Perform",'','',function(name,date){
+            $scope.selected = name + " " +date;
+        });
     };
 }]);
 
-function addModal($scope, $modal, $log, title, callback){
+function addEditModal($scope, $modal, $log, title, name, callback){
     var modalInstance = $modal.open({
-        templateUrl: '/partials/add.html',
+        templateUrl: '/partials/addedit.html',
         controller: function ($scope, $modalInstance) {
             $scope.title = title;
-            $scope.data = {name : ''};
+            $scope.data = {name : name};
 
             $scope.add = function () {
                 $modalInstance.close($scope.data.name);
@@ -65,3 +65,26 @@ function addModal($scope, $modal, $log, title, callback){
     });
 };
 
+function addEditPerformModal($scope, $modal, $log, title, name, date, callback){
+    var modalInstance = $modal.open({
+        templateUrl: '/partials/addeditperform.html',
+        controller: function ($scope, $modalInstance) {
+            $scope.title = title;
+            $scope.data = {name : name, date : ''};
+
+            $scope.add = function () {
+                $modalInstance.close($scope.data);
+            };
+
+            $scope.cancel = function () {
+                $modalInstance.dismiss('cancel');
+            };
+        }
+    });
+
+    modalInstance.result.then(function(data){
+        callback(data.name,data.date);
+    },function(){
+        callback('You decided not to enter in your name, that makes me sad.','');
+    });
+};
