@@ -24,55 +24,52 @@
   <script src="js/filters.js"></script>
   <script src="js/services.js"></script>
 </head>
-<body>
-    <div ng-controller="AddController">
-        <nav class="navbar navbar-default" role="navigation">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="#">HourMachine</a>
-                    <!--<div id="add-button" class="navbar-text glyphicon glyphicon-plus-sign"></div>-->
-                    <!--<button class="btn btn-default navbar-btn" ng-click="addProject()"><span class="glyphicon glyphicon-plus"></span></button>-->
-                </div>
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" ng-controller="NavHeaderController">
-                    <button class="btn btn-success navbar-btn" ng-click="isNew()">NEW</button>
-                    <div class="btn-group" data-toggle="buttons">
-                        <label class="btn btn-default navbar-btn active">
-                            <input type="radio" name="options" id="day"> Day
-                        </label>
-                        <label class="btn btn-default navbar-btn">
-                            <input type="radio" name="options" id="week"> Week
-                        </label>
-                        <label class="btn btn-default navbar-btn">
-                            <input type="radio" name="options" id="month"> Month
-                        </label>
-                        <label class="btn btn-default navbar-btn">
-                            <input type="radio" name="options" id="year"> Year
-                        </label>
-                    </div>
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-chevron-left"></span></button>
-                        <button type="button" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-calendar"></span></button>
-                        <button type="button" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-chevron-right"></span></button>
-                    </div>
-
-                    <ul class="nav navbar-nav navbar-right">
-                        <li ng-class="{ active: isActive('/login')}"><a href="#/login">Login</a></li>
-                        <li ng-class="{ active: isActive('/projects')}"><a href="#/projects">Projects</a></li>
-                        <li ng-class="{ active: isActive('/tasks')}"><a href="#/tasks">Tasks</a></li>
-                        <li ng-class="{ active: isActive('/performs')}"><a href="#/performs">Performs</a></li>
-                    </ul>
-                </div>
+<body ng-controller="MainController">
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">HourMachine</a>
+                <!--<div id="add-button" class="navbar-text glyphicon glyphicon-plus-sign"></div>-->
+                <!--<button class="btn btn-default navbar-btn" ng-click="addProject()"><span class="glyphicon glyphicon-plus"></span></button>-->
             </div>
-        </nav>
-        <div ng-show="selected">Name: {{ selected }}</div>
-    </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <button class="btn btn-success navbar-btn" ng-click="clickNew()">NEW</button>
+                <div class="btn-group" data-toggle="buttons">
+                    <label class="btn btn-default navbar-btn active">
+                        <input type="radio" name="options" id="day"> Day
+                    </label>
+                    <label class="btn btn-default navbar-btn">
+                        <input type="radio" name="options" id="week"> Week
+                    </label>
+                    <label class="btn btn-default navbar-btn">
+                        <input type="radio" name="options" id="month"> Month
+                    </label>
+                    <label class="btn btn-default navbar-btn">
+                        <input type="radio" name="options" id="year"> Year
+                    </label>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-chevron-left"></span></button>
+                    <button type="button" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-calendar"></span></button>
+                    <button type="button" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-chevron-right"></span></button>
+                </div>
 
+                <ul class="nav navbar-nav navbar-right">
+                    <li ng-class="{ active: isActive('/login')}"><a href="#/login">Login</a></li>
+                    <li ng-class="{ active: isActive('/projects')}"><a href="#/projects">Projects</a></li>
+                    <li ng-class="{ active: isActive('/tasks')}"><a href="#/tasks">Tasks</a></li>
+                    <li ng-class="{ active: isActive('/performs')}"><a href="#/performs">Performs</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div ng-show="selected">Name: {{ selected }}</div>
     <div class="view-container">
         <div ng-view class="view-frame"></div>
     </div>

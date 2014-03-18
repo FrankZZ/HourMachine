@@ -8,21 +8,9 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>Vakkevullen</td>
-                <td>53:30</td>
-            </tr>
-            <tr>
-                <td>Kassa</td>
-                <td>01:30</td>
-            </tr>
-            <tr>
-                <td>Dwijlen</td>
-                <td>00:30</td>
-            </tr>
-            <tr>
-                <td>Slager helpen</td>
-                <td>05:45</td>
+            <tr ng-repeat="task in taskList">
+                <td>{{task.name }}</td>
+                <td>{{task.totalhours }}</td>
             </tr>
         </tbody>
     </table>

@@ -4,44 +4,54 @@
 
 var hourMachineControllers = angular.module('hourMachineControllers', []);
 
-hourMachineControllers.controller('MainCtrl', ['$scope', '$routeParams', 'Phone',function($scope, $routeParams, Phone) {
+hourMachineControllers.controller('ProjectController', ["$scope","$rootScope","$modal", "ProjectService", function ($scope,$rootScope,$modal,ProjectService) {
+    ProjectService.get(function(result) {
+        $scope.projectList = result.projectlist;
+    });
+    $rootScope.clickNew = function () {
+        addEditModal($scope, $modal, "Project", '',function(name){
+            $rootScope.selected = name;
+        });
+    };
+}]);
+hourMachineControllers.controller('TaskController', ["$scope","$rootScope","$modal", "TaskService", function ($scope,$rootScope,$modal,TaskService) {
+    TaskService.get(function(result) {
+        $scope.taskList = result.tasklist;
+    });
+    $rootScope.clickNew = function () {
+        addEditModal($scope, $modal, "Task",'',function(name){
+            $rootScope.selected = name;
+        });
+    };
+}]);
+hourMachineControllers.controller('PerformsController', ["$scope","$rootScope","$modal", "PerformsService", function ($scope,$rootScope,$modal,PerformsService) {
+    PerformsService.get(function(result) {
+        $scope.performList = result.performlist;
+    });
+    $rootScope.clickNew = function () {
+        addEditPerformModal($scope, $modal,"Perform",'','',function(name,date){
+            $rootScope.selected = name + " " +date;
+        });
+    };
+}]);
 
- }]);
-hourMachineControllers.controller('NavHeaderController', ['$scope', '$location',function($scope, $location) {
+hourMachineControllers.controller('MainController', ['$scope', '$modal', '$location',function($scope, $modal, $location) {
+    //This is for activive menu button
     $scope.isActive = function (viewLocation) {
         return viewLocation === $location.path();
     };
-    $scope.isNew = function () {
-        if($location.path() === "/tasks"){
-            $scope.addTask();
-        }else if($location.path() === "/projects"){
-            $scope.addProject();
-        }else if($location.path() === "/performs"){
-            $scope.addPerform();
-        }
-    };
-}]);
-hourMachineControllers.controller('AddController', ['$scope', '$modal', '$log',function($scope, $modal, $log) {
-    $scope.addProject = function () {
-        addEditModal($scope, $modal, $log,"Project", '',function(name){
-            $scope.selected = name;
-        });
-    };
-
-    $scope.addTask = function () {
-        addEditModal($scope, $modal, $log,"Task",'',function(name){
-            $scope.selected = name;
-        });
-    };
-
-    $scope.addPerform = function () {
-        addEditPerformModal($scope, $modal, $log,"Perform",'','',function(name,date){
-            $scope.selected = name + " " +date;
-        });
-    };
+//    $scope.clickNew = function () {
+//        if($location.path() === "/tasks"){
+//            $scope.addTask();
+//        }else if($location.path() === "/projects"){
+//            $scope.addProject();
+//        }else if($location.path() === "/performs"){
+//            $scope.addPerform();
+//        }
+//    }
 }]);
 
-function addEditModal($scope, $modal, $log, title, name, callback){
+function addEditModal($scope, $modal, title, name, callback){
     var modalInstance = $modal.open({
         templateUrl: '/partials/addedit.html',
         controller: function ($scope, $modalInstance) {
@@ -65,7 +75,7 @@ function addEditModal($scope, $modal, $log, title, name, callback){
     });
 };
 
-function addEditPerformModal($scope, $modal, $log, title, name, date, callback){
+function addEditPerformModal($scope, $modal, title, name, date, callback){
     var modalInstance = $modal.open({
         templateUrl: '/partials/addeditperform.html',
         controller: function ($scope, $modalInstance) {

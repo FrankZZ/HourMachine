@@ -4,9 +4,12 @@
 
 var hourMachineServices = angular.module('hourMachineServices', ['ngResource']);
 
-hourMachineServices.factory('Phone', ['$resource',
-  function($resource){
-    return $resource('phones/:phoneId.json', {}, {
-      query: {method:'GET', params:{phoneId:'phones'}, isArray:true}
-    });
-  }]);
+hourMachineServices.factory('ProjectService', function($resource){
+    return $resource('http://localhost:3000/testdate.json');
+});
+hourMachineServices.factory('TaskService', function($resource){
+    return $resource('http://localhost:3000/testdate.json');
+});
+hourMachineServices.factory('PerformsService', function($resource){
+    return $resource('http://localhost:3000/testdate.json');
+});

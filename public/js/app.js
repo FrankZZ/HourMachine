@@ -21,15 +21,15 @@ hourMachineApp.config(['$routeProvider',
         }).
         when('/projects', {
         templateUrl: 'partials/projects.html',
-        controller: 'MainCtrl'
+        controller: 'ProjectController'
         }).
         when('/tasks', {
             templateUrl: 'partials/tasks.html',
-            controller: 'MainCtrl'
+            controller: 'TaskController'
         }).
         when('/performs', {
             templateUrl: 'partials/performs.html',
-            controller: 'MainCtrl'
+            controller: 'PerformsController'
         }).
         otherwise({
         redirectTo: '/login'
