@@ -29,14 +29,24 @@ hourMachineControllers.controller('PerformsController', ["$scope","$rootScope","
         $scope.performList = result.performlist;
     });
     $rootScope.clickNew = function () {
-        addEditPerformModal($scope, $modal,"Perform",'','',function(name,date){
+        var datenow = new Date();
+        var datenowString =
+            datenow.getFullYear()+"-"+
+            ((datenow.getMonth() < 10) ? "0"+datenow.getMonth() : datenow.getMonth())+"-"+
+            ((datenow.getDate() < 10) ? "0"+datenow.getDate() : datenow.getDate());
+        addEditPerformModal($scope, $modal,"Perform",'',datenowString,function(name,date){
             $rootScope.selected = name + " " +date;
+        });
+    };
+    $rootScope.clickNewTask = function () {
+        addEditModal($scope, $modal, "Task",'',function(name){
+            //$rootScope.selected = name;
         });
     };
 }]);
 
 hourMachineControllers.controller('MainController', ['$scope', '$modal', '$location',function($scope, $modal, $location) {
-    //This is for activive menu button
+    /*This is for activive menu button*/
     $scope.isActive = function (viewLocation) {
         return viewLocation === $location.path();
     };
@@ -80,7 +90,7 @@ function addEditPerformModal($scope, $modal, title, name, date, callback){
         templateUrl: '/partials/addeditperform.html',
         controller: function ($scope, $modalInstance) {
             $scope.title = title;
-            $scope.data = {name : name, date : ''};
+            $scope.data = {name : name, date : date};
 
             $scope.add = function () {
                 $modalInstance.close($scope.data);
