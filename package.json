@@ -1,12 +1,13 @@
 {
-	"name": "HourMachine",
-	"version": "0.0.1",
-	"private": true,
-	"scripts": {
-		"start": "node app.js"
-	},
-	"dependencies": {
-		"express": "3.4.8",
-		"mongoose": "*"
-	}
+  "name": "HourMachine",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "express": "3.4.8",
+    "sequelize": "^1.7.0",
+    "mysql": "^2.1.0"
+  }
 }
