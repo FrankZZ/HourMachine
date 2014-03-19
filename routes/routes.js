@@ -1,8 +1,8 @@
 // routes/routes.js
 
-var projects = require('projects');
-var tasks = require('tasks');
-var performs = require('performs');
+var projects = require('./projects');
+var tasks = require('./tasks');
+var performs = require('./performs');
 
 module.exports = function (app)
 {
@@ -20,7 +20,7 @@ module.exports = function (app)
 	// *** Tasks ***
 	app.get('/api/tasks', tasks.list);
 
-	app.put('/api/task/:task_id', tasks.update);
+	// app.put('/api/task/:task_id', tasks.update);
 
 	app.post('/api/tasks', tasks.create);
 
@@ -30,7 +30,7 @@ module.exports = function (app)
 	// *** Performs ***
 	app.get('/api/performs', performs.list);
 
-	app.put('/api/perform/:perform_id', performs.update);
+	// app.put('/api/perform/:perform_id', performs.update);
 
 	app.post('/api/performs', performs.create);
 

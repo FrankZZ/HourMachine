@@ -1,7 +1,6 @@
 // models/perform.js
 
-var mongoose = new require('mongoose');
-
+/*
 var PerformSchema = new mongoose.Schema(
 	{
 		name: String,
@@ -10,3 +9,4 @@ var PerformSchema = new mongoose.Schema(
 );
 
 module.exports = mongoose.model('Perform', PerformSchema);
+*/

@@ -6,12 +6,10 @@ var express = require('express');
 var http = require('http');
 var path = require('path');
 
-var mongoose = new require('mongoose');
 var db = require('./config/database');
 
 var app = express();
 
-mongoose.connect(db.url);
 
 // all environments
 app.set('port', process.env.PORT || 3000);
