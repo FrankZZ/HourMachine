@@ -14,7 +14,7 @@ module.exports = function (app)
 
 	app.post('/api/projects', projects.create);
 
-	app.del('/api/project/:project_id', projects.delete);
+	app.delete('/api/project/:project_id', projects.delete);
 
 
 	// *** Tasks ***
@@ -24,7 +24,7 @@ module.exports = function (app)
 
 	app.post('/api/tasks', tasks.create);
 
-	app.del('/api/task/:task_id', tasks.delete);
+	app.delete('/api/task/:task_id', tasks.delete);
 
 
 	// *** Performs ***
@@ -34,6 +34,6 @@ module.exports = function (app)
 
 	app.post('/api/performs', performs.create);
 
-	app.del('/api/perform/:perform_id', performs.delete);
+	app.delete('/api/perform/:perform_id', performs.delete);
 
 };

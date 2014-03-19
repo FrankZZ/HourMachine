@@ -31,7 +31,7 @@ module.exports.delete = function (req, res)
 		if (data[i] && data[i].id == project_id)
 		{
 			console.log("Deleting project \"" + data[i].name + "\"...");
-			delete data[i];
+			data.splice(i, 1);
 			res.send(200, 'OK');
 			return;
 		}
