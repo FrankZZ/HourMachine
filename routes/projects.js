@@ -11,10 +11,11 @@ var data = [
 
 module.exports.create = function (req, res)
 {
+	console.log("Creating project \"" + req.body.name + "\"...");
 	var project = {"id": data.length, "name": req.body.name, "totalHours": req.body.totalHours};
 	data[data.length] = project;
 
-	res.send(200, 'OK');
+	res.send(200, data);
 }
 
 module.exports.list = function (req, res)
@@ -32,7 +33,7 @@ module.exports.delete = function (req, res)
 		{
 			console.log("Deleting project \"" + data[i].name + "\"...");
 			data.splice(i, 1);
-			res.send(200, 'OK');
+			res.send(200, data);
 			return;
 		}
 	}
@@ -52,7 +53,7 @@ module.exports.update = function (req, res)
 			data[i].name = req.body.name;
 			data[i].totalHours = req.body.totalHours;
 
-			res.send(200, 'OK');
+			res.send(200, data);
 			return;
 		}
 	}
