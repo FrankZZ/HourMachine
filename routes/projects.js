@@ -9,13 +9,20 @@ var data = [
 	{"id": 3, "name":"Project motor fixen","totalHours":"05:45"}
 ];
 
+var highestId = data.length - 1;
+
 module.exports.create = function (req, res)
 {
-	console.log("Creating project \"" + req.body.name + "\"...");
-	var project = {"id": data.length, "name": req.body.name, "totalHours": req.body.totalHours};
-	data[data.length] = project;
+	if ("project" in req.body)
+	{
+		highestId++;
+		console.log("Creating project \"" + req.body.project.name + "\"...");
+		data[highestId] = req.body.project;
 
-	res.send(200, data);
+		res.send(200, data);
+	}
+	else
+		res.send(400, data); //bad request
 }
 
 module.exports.list = function (req, res)
@@ -37,24 +44,29 @@ module.exports.delete = function (req, res)
 			return;
 		}
 	}
-	res.send(404, 'NOT FOUND');
+	res.send(404, data);
 }
 
 module.exports.update = function (req, res)
 {
-	var project_id = req.params.project_id;
-
-	for( var i = 0; i < data.length; i++)
+	if ("project" in req.body)
 	{
-		if (data[i] && data[i].id == project_id)
+		var project_id = req.params.project_id;
+
+		for( var i = 0; i < data.length; i++)
 		{
-			console.log("Updating project \"" + data[i].name + "\"...");
+			if (data[i] && data[i].id == project_id)
+			{
+				console.log("Updating project \"" + data[i].name + "\"...");
 
-			data[i].name = req.body.name;
-			data[i].totalHours = req.body.totalHours;
+				data[i] = req.body.project;
 
-			res.send(200, data);
-			return;
+				res.send(200, data);
+				return;
+			}
 		}
+		res.send(404, data);
 	}
+	else
+		res.send(400, data);
 }
