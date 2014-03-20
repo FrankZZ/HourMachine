@@ -1,5 +1,6 @@
 // routes/routes.js
 
+var index = require('./index');
 var projects = require('./projects');
 var tasks = require('./tasks');
 var performs = require('./performs');
@@ -8,11 +9,11 @@ module.exports = function (app)
 {
 
 	// *** Projects ***
-	app.get('/api/projects', projects.list);
+	app.get('/api/projects', index.list);
 
 	app.put('/api/project/:project_id', projects.update);
 
-	app.post('/api/projects', projects.create);
+	app.post('/api/projects', index.createproject);
 
 	app.delete('/api/project/:project_id', projects.delete);
 

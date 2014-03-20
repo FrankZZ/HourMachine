@@ -1,6 +1,6 @@
 //routes/performs.js
 
-var Perform = require('../models/perform');
+//var Perform = require('../models/perform');
 /*
  var dataTemplate = {
  date:datenowString,
