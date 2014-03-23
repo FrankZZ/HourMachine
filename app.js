@@ -25,6 +25,9 @@ if ('development' == app.get('env'))
 	app.use(express.errorHandler());
 }
 
+// Initialize mongodb connection
+db.initialize();
+
 // Load routes
 require('./routes/routes')(app);
 

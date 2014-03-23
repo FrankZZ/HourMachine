@@ -1,5 +1,6 @@
+var mongoose = require('mongoose');
 
-module.exports =
+exports.initialize = function()
 {
-	url: 'mongodb://hourmachine:uurmachine@frankwammes.nl:27017/hourmachine'
-};
+	global.db = mongoose.createConnection('mongodb://hourmachine:uurmachine@frankwammes.nl:27017/hourmachine');
+}
