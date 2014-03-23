@@ -32,7 +32,7 @@ exports.create = function (req, res)
 					return;
 				}
 
-				res.send(200, project);
+				res.send(200, project.tasks);
 			});
 
 		});

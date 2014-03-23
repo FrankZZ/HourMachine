@@ -5,7 +5,6 @@
 var hourMachineServices = angular.module('hourMachineServices', ['ngResource']);
 
 hourMachineServices.factory('ProjectService', function($http){
-    var currentProject = null;
     return {
         get : function() {
             return $http.get('/api/projects');
@@ -18,37 +17,30 @@ hourMachineServices.factory('ProjectService', function($http){
         },
         update : function(projectData){
             return $http.put('/api/project/' + projectData.id, projectData);
-        },
-        setCurrentProject : function(project) {
-            currentProject = project;
-            return currentProject;
-        },
-        getCurrentProject : function() {
-            return currentProject;
         }
     }
 });
 hourMachineServices.factory('ProjectDetailService', function($http){
-    var currentProject = null;
+    var currentProjectId = null;
     return {
         get : function() {
-            return currentProject.tasks;
+            return $http.get('/api/project/'+currentProjectId+'/tasks/');
         },
         create : function(taskData) {
-            return $http.post('/api/project/'+currentProject._id+'/tasks/', taskData);
+            return $http.post('/api/project/'+currentProjectId+'/tasks/', taskData);
         },
         delete : function(id) {
-            return $http.delete('/api/project/'+currentProject._id+'/task/' + id);
+            return $http.delete('/api/project/'+currentProjectId+'/task/' + id);
         },
         update : function(taskData){
-            return $http.put('/api/project/'+currentProject._id+'/task/' + taskData.id, taskData);
+            return $http.put('/api/project/'+currentProjectId+'/task/' + taskData.id, taskData);
         },
-        setCurrentProject : function(project) {
-            currentProject = project;
-            return currentProject;
+        setCurrentProject : function(projectId) {
+            currentProjectId = projectId;
+            return currentProjectId;
         },
         getCurrentProject : function() {
-            return currentProject;
+            return currentProjectId;
         }
     }
 });

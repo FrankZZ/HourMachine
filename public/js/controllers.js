@@ -53,16 +53,18 @@ hourMachineControllers.controller('ProjectController', ["$scope","$routeParams",
         });
     };
     $scope.goTo = function (path, project){
-        ProjectService.setCurrentProject(project);
         $location.path(path+project._id+"/tasks");
     };
 }]);
 hourMachineControllers.controller('ProjectDetailController', ["$scope","$routeParams","$rootScope","$modal",'$location',"ProjectService","ProjectDetailService",
                                                     function ($scope, $routeParams, $rootScope, $modal, $location, ProjectService, ProjectDetailService) {
 
-        ProjectDetailService.setCurrentProject(ProjectService.getCurrentProject());
+        ProjectDetailService.setCurrentProject($routeParams.project_id);
 
-        $scope.taskList = ProjectDetailService.get();
+        ProjectDetailService.get()
+            .success(function(data) {
+                $scope.taskList = data;
+            });
 
         $rootScope.clickNew = function () {
             var startData = {
