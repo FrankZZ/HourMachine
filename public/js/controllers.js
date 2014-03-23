@@ -4,46 +4,138 @@
 
 var hourMachineControllers = angular.module('hourMachineControllers', []);
 
-hourMachineControllers.controller('ProjectController', ["$scope","$rootScope","$modal", "ProjectService", function ($scope,$rootScope,$modal,ProjectService) {
-    ProjectService.get(function(result) {
-        $scope.projectList = result.projectlist;
-    });
-    $rootScope.clickNew = function () {
-        addEditModal($scope, $modal, "Project", '',function(name){
-            $rootScope.selected = name;
+hourMachineControllers.controller('ProjectController', ["$scope","$routeParams","$rootScope","$modal",'$location',"ProjectService",
+                                                function ($scope, $routeParams, $rootScope, $modal, $location, ProjectService) {
+    ProjectService.get()
+        .success(function(data) {
+            $scope.projectList = data;
         });
+
+    $rootScope.clickNew = function () {
+        var startData = {
+            name:"",
+            totalHours:"00:00"
+        };
+        var modalSettings = {
+            title:"Add Project",
+            buttonName:"Save",
+            delbuttonhidden:"true",
+            templateUrl:'/partials/addedit.html'
+        };
+
+        cudModal($scope, $modal, modalSettings, startData,function(newData){
+            ProjectService.create(newData.data)
+                .success(function(retData) {
+                    //$scope.projectList.push(data);
+                    $scope.projectList = retData;
+                });
+        });
+    };
+    $scope.editRow = function (data){
+        var modalSettings = {
+            title:"Edit Project",
+            buttonName:"Save",
+            delbuttonhidden:"false",
+            templateUrl:'/partials/addedit.html'
+        };
+        cudModal($scope, $modal, modalSettings, data,function(newData){
+            if(newData.del == "false"){
+                ProjectService.update(newData.data)
+                    .success(function(retData) {
+                        $scope.projectList = retData;
+                    });
+            }else if(newData.del == "true"){
+                ProjectService.delete(newData.data.id)
+                    .success(function(retData) {
+                        $scope.projectList = retData;
+                    });
+            }
+        });
+    };
+    $scope.goTo = function (path, project){
+        ProjectService.setCurrentProject(project);
+        $location.path(path+project._id+"/tasks");
     };
 }]);
-hourMachineControllers.controller('TaskController', ["$scope","$rootScope","$modal", "TaskService", function ($scope,$rootScope,$modal,TaskService) {
-    TaskService.get(function(result) {
-        $scope.taskList = result.tasklist;
-    });
-    $rootScope.clickNew = function () {
-        addEditModal($scope, $modal, "Task",'',function(name){
-            $rootScope.selected = name;
-        });
-    };
-}]);
-hourMachineControllers.controller('PerformsController', ["$scope","$rootScope","$modal", "PerformsService", function ($scope,$rootScope,$modal,PerformsService) {
-    PerformsService.get(function(result) {
-        $scope.performList = result.performlist;
-    });
-    $rootScope.clickNew = function () {
-        var datenow = new Date();
-        var datenowString =
-            datenow.getFullYear()+"-"+
-            ((datenow.getMonth() < 10) ? "0"+datenow.getMonth() : datenow.getMonth())+"-"+
-            ((datenow.getDate() < 10) ? "0"+datenow.getDate() : datenow.getDate());
-        addEditPerformModal($scope, $modal,"Perform",'',datenowString,function(name,date){
-            $rootScope.selected = name + " " +date;
-        });
-    };
-    $rootScope.clickNewTask = function () {
-        addEditModal($scope, $modal, "Task",'',function(name){
-            //$rootScope.selected = name;
-        });
-    };
-}]);
+hourMachineControllers.controller('ProjectDetailController', ["$scope","$routeParams","$rootScope","$modal",'$location',"ProjectService","ProjectDetailService",
+                                                    function ($scope, $routeParams, $rootScope, $modal, $location, ProjectService, ProjectDetailService) {
+
+        ProjectDetailService.setCurrentProject(ProjectService.getCurrentProject());
+
+        $scope.taskList = ProjectDetailService.get();
+
+        $rootScope.clickNew = function () {
+            var startData = {
+                name:"",
+                totalHours:"00:00"
+            };
+            var modalSettings = {
+                title:"Add Task",
+                buttonName:"Save",
+                delbuttonhidden:"true",
+                templateUrl:'/partials/addedit.html'
+            };
+
+            cudModal($scope, $modal, modalSettings, startData,function(newData){
+                ProjectDetailService.create(newData.data)
+                    .success(function(retData) {
+                        //$scope.projectList.push(data);
+                        $scope.taskList = retData;
+                    });
+            });
+        };
+        $scope.editRow = function (data){
+            var modalSettings = {
+                title:"Edit Task",
+                buttonName:"Save",
+                delbuttonhidden:"false",
+                templateUrl:'/partials/addedit.html'
+            };
+            cudModal($scope, $modal, modalSettings, data,function(newData){
+                if(newData.del == "false"){
+                    ProjectDetailService.update(newData.data)
+                        .success(function(retData) {
+                            $scope.taskList = retData;
+                        });
+                }else if(newData.del == "true"){
+                    ProjectDetailService.delete(newData.data.id)
+                        .success(function(retData) {
+                            $scope.taskList = retData;
+                        });
+                }
+            });
+        };
+        $scope.goTo = function (path, project){
+            $location.path(path+project.id);
+        };
+    }]);
+
+//hourMachineControllers.controller('PerformsController', ["$scope","$rootScope","$modal", "PerformsService", function ($scope,$rootScope,$modal,PerformsService) {
+//    PerformsService.get()
+//        .success(function(data) {
+//            $scope.projectList = data;
+//        });
+//    $rootScope.clickNew = function () {
+//
+//        var datenow = new Date();
+//        var datenowString = datenow.getFullYear()+"-"+((datenow.getMonth() < 10) ? "0"+datenow.getMonth() : datenow.getMonth())+"-"+((datenow.getDate() < 10) ? "0"+datenow.getDate() : datenow.getDate());
+//
+//        var startData = {
+//            date:datenowString,
+//            fromTime:"",
+//            toTime:"",
+//            pauseTime:"",
+//            totalHours:"",
+//            comment:"",
+//            task:""
+//        };
+//        var modalSettings = {title:"Add Perform",buttonName:"ADD", delbuttonhidden:"true", templateUrl:'/partials/addeditperform.html'};
+//
+//        cudModal($scope, $modal, modalSettings, startData,function(newData){
+//
+//        });
+//    };
+//}]);
 
 hourMachineControllers.controller('MainController', ['$scope', '$modal', '$location',function($scope, $modal, $location) {
     /*This is for activive menu button*/
@@ -61,15 +153,40 @@ hourMachineControllers.controller('MainController', ['$scope', '$modal', '$locat
 //    }
 }]);
 
-function addEditModal($scope, $modal, title, name, callback){
+function cudModal($scope, $modal, settings, data, callback){
     var modalInstance = $modal.open({
-        templateUrl: '/partials/addedit.html',
+        templateUrl: settings.templateUrl,
         controller: function ($scope, $modalInstance) {
-            $scope.title = title;
-            $scope.data = {name : name};
+            $scope.title = settings.title;
+            $scope.buttonName = settings.buttonName;
+            $scope.delbuttonhidden = settings.delbuttonhidden;
 
-            $scope.add = function () {
-                $modalInstance.close($scope.data.name);
+            $scope.data = angular.copy(data);
+
+            $scope.setTime = function(){
+                if($scope.data.fromTime != "" && $scope.data.toTime != ""){
+                    var totalHoursArr = new Date(new Date("1/1/1970 "+angular.copy($scope.data.toTime)) - new Date("1/1/1970 "+angular.copy($scope.data.fromTime))).toUTCString().split(" ")[4].split(":");
+                    var totalHoursDate = new Date("1/1/1970 "+totalHoursArr[0]+":"+totalHoursArr[1]);
+
+
+                    var pauseTimeDate = new Date("1/1/1970 "+angular.copy($scope.data.pauseTime));
+                    if(totalHoursDate > pauseTimeDate){
+                        totalHoursDate.setMinutes(totalHoursDate.getMinutes() - (pauseTimeDate.getHours()*60+pauseTimeDate.getMinutes()));
+                        totalHoursDate.setHours(totalHoursDate.getHours() + 1);
+                    }
+
+                   var retTotalHoursDate = totalHoursDate.toUTCString().split(" ")[4].split(":");
+                   $scope.data.totalHours = retTotalHoursDate[0]+":"+retTotalHoursDate[1];
+
+                }else{
+                    $scope.data.totalHours = "";
+                }
+
+
+            };
+
+            $scope.click = function (del) {
+                $modalInstance.close({data:$scope.data,del:del});
             };
 
             $scope.cancel = function () {
@@ -78,33 +195,10 @@ function addEditModal($scope, $modal, title, name, callback){
         }
     });
 
-    modalInstance.result.then(function(name){
-        callback(name);
+    modalInstance.result.then(function(retdata){
+        callback(retdata);
     },function(){
-        callback('You decided not to enter in your name, that makes me sad.');
+        callback(null);
     });
 };
 
-function addEditPerformModal($scope, $modal, title, name, date, callback){
-    var modalInstance = $modal.open({
-        templateUrl: '/partials/addeditperform.html',
-        controller: function ($scope, $modalInstance) {
-            $scope.title = title;
-            $scope.data = {name : name, date : date};
-
-            $scope.add = function () {
-                $modalInstance.close($scope.data);
-            };
-
-            $scope.cancel = function () {
-                $modalInstance.dismiss('cancel');
-            };
-        }
-    });
-
-    modalInstance.result.then(function(data){
-        callback(data.name,data.date);
-    },function(){
-        callback('You decided not to enter in your name, that makes me sad.','');
-    });
-};

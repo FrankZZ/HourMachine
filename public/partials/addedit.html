@@ -1,6 +1,6 @@
 <div class="modal-header">
     <button type="button" class="close" ng-click="cancel()" aria-hidden="true">&times;</button>
-    <h4 class="modal-title">Add {{title}}</h4>
+    <h4 class="modal-title">{{title}}</h4>
 </div>
 <div class="modal-body">
     <div class="input-group">
@@ -9,6 +9,8 @@
     </div>
 </div>
 <div class="modal-footer">
-    <button class="btn btn-primary" ng-click="add()">ADD</button>
+    <button class="btn btn-danger" ng-click="click('true')" ng-hide="{{delbuttonhidden}}">Delete</button>
+
     <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+    <button class="btn btn-primary" ng-click="click('false')">{{buttonName}}</button>
 </div>

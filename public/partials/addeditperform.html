@@ -1,28 +1,28 @@
 <div class="modal-header">
     <button type="button" class="close" ng-click="cancel()" aria-hidden="true">&times;</button>
-    <h4 class="modal-title">Add {{title}}</h4>
+    <h4 class="modal-title">{{title}}</h4>
 </div>
 <div class="modal-body">
-    <form role="form-horizontal" id="myform" ng-submit="add()" >
+    <form role="form-horizontal" id="myform" ng-submit="click('false')" >
         <div class="form-group">
             <label for="dateInput">Date</label>
             <input ng-model="data.date" type="date" class="form-control" id="dateInput" required="required">
         </div>
         <div class="form-group">
             <label for="timeFromInput" >From</label>
-            <input ng-model="data.fromtime" type="time" class="form-control" id="timeFromInput" required="required">
+            <input  ng-change="setTime()" ng-model="data.fromTime" type="time" class="form-control" id="timeFromInput" required="required">
         </div>
         <div class="form-group">
             <label for="timeToInput" >To</label>
-            <input ng-model="data.totime" type="time" class="form-control" id="timeToInput" required="required">
+            <input ng-change="setTime()" ng-model="data.toTime" type="time" class="form-control" id="timeToInput" required="required">
         </div>
         <div class="form-group">
             <label for="timePauseInput">Pause</label>
-            <input ng-model="data.pausetime" type="time" class="form-control" id="timePauseInput" required="required">
+            <input ng-change="setTime()" ng-model="data.pauseTime" type="time" class="form-control" id="timePauseInput" required="required">
         </div>
         <div class="form-group">
             <label for="timetotalInput">Total Hours</label>
-            <input ng-model="data.totaltime" type="time" class="form-control" id="timetotalInput" disabled="disabled">
+            <input ng-model="data.totalHours" type="time" class="form-control" id="timetotalInput" disabled="disabled">
         </div>
         <div class="form-group">
             <label for="commentInput" >Comment</label>
@@ -43,6 +43,7 @@
     <button class="btn btn-success" ng-click="clickNewTask()">NEW TASK</button>
 </div>
 <div class="modal-footer">
-    <button class="btn btn-primary" form="myform">ADD</button>
+    <button class="btn btn-danger" ng-click="click('true')" ng-hide="{{delbuttonhidden}}">Delete</button>
     <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+    <button class="btn btn-primary"  form="myform">{{buttonName}}</button>
 </div>

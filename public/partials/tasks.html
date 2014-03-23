@@ -1,5 +1,5 @@
-<div class="panel panel-warning">
-    <div class="panel-heading">Tasks</div>
+<div class="panel panel-success" >
+    <div class="panel-heading">Projects</div>
     <table class="table table-hover">
         <thead>
             <tr>
@@ -8,9 +8,10 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="task in taskList">
-                <td>{{task.name }}</td>
-                <td>{{task.totalhours }}</td>
+            <tr ng-repeat="task in taskList" >
+                <td ng-click="goTo('/task/',task)">{{task.name }}</td>
+                <td ng-click="goTo('/task/',task)">{{task.totalhours }}</td>
+                <td ng-click="editRow(task)"><span class="glyphicon glyphicon-pencil" ></span></td>
             </tr>
         </tbody>
     </table>
