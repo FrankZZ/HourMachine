@@ -35,12 +35,44 @@ hourMachineServices.factory('ProjectDetailService', function($http){
         update : function(taskData){
             return $http.put('/api/project/'+currentProjectId+'/task/' + taskData.id, taskData);
         },
-        setCurrentProject : function(projectId) {
+        setCurrentProjectId : function(projectId) {
             currentProjectId = projectId;
             return currentProjectId;
         },
-        getCurrentProject : function() {
+        getCurrentProjectId : function() {
             return currentProjectId;
+        }
+    }
+});
+hourMachineServices.factory('TaskDetailService', function($http){
+    var currentProjectId = null;
+    var currentTaskId = null;
+    return {
+        get : function() {
+            return $http.get('/api/project/'+currentProjectId+'/task/'+currentTaskId+'/performs');
+        },
+        create : function(taskData) {
+            return $http.post('/api/project/'+currentProjectId+'/task/'+currentTaskId+'/performs', taskData);
+        },
+        delete : function(id) {
+            return $http.delete('/api/project/'+currentProjectId+'/task/'+currentTaskId+'/perform/' + id);
+        },
+        update : function(taskData){
+            return $http.put('/api/project/'+currentProjectId+'/task/'+currentTaskId+'/perform/' + taskData.id, taskData);
+        },
+        setCurrentProjectId : function(projectId) {
+            currentProjectId = projectId;
+            return currentProjectId;
+        },
+        getCurrentProjectId : function() {
+            return currentProjectId;
+        },
+        setCurrentTaskId : function(taskId) {
+            currentTaskId = taskId;
+            return currentTaskId;
+        },
+        getCurrentTaskId : function() {
+            return currentTaskId;
         }
     }
 });

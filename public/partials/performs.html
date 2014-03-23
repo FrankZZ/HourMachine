@@ -1,4 +1,5 @@
-<div class="panel panel-info">
+
+<div class="panel panel-success" >
     <div class="panel-heading">Performs</div>
     <table class="table table-hover">
         <thead>
@@ -9,10 +10,11 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="perform in performList">
-                <td>{{perform.date }}</td>
-                <td>{{perform.task}}</td>
-                <td>{{perform.totalHours }}</td>
+            <tr ng-repeat="perform in performList" >
+                <td >{{perform.date }}</td>
+                <td >{{perform.task.name }}</td>
+                <td >{{perform.totalHours }}</td>
+                <td ng-click="editRow(perform)"><span class="glyphicon glyphicon-pencil" ></span></td>
             </tr>
         </tbody>
     </table>

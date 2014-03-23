@@ -4,8 +4,17 @@
 
 var hourMachineControllers = angular.module('hourMachineControllers', []);
 
-hourMachineControllers.controller('ProjectController', ["$scope","$routeParams","$rootScope","$modal",'$location',"ProjectService",
-                                                function ($scope, $routeParams, $rootScope, $modal, $location, ProjectService) {
+hourMachineControllers.controller('ProjectController',
+    ["$scope","$routeParams","$rootScope","$modal",'$location',"ProjectService",
+function ($scope, $routeParams, $rootScope, $modal, $location, ProjectService) {
+    //For breadcrumb
+    //--------------
+    $rootScope.taskDetailBtnShow = false;
+    $rootScope.taskDetailBtnActive = false;
+    $rootScope.projectDetailBtnShow = false;
+    $rootScope.projectDetailBtnActive = false;
+    //--------------
+
     ProjectService.get()
         .success(function(data) {
             $scope.projectList = data;
@@ -52,66 +61,104 @@ hourMachineControllers.controller('ProjectController', ["$scope","$routeParams",
             }
         });
     };
-    $scope.goTo = function (path, project){
-        $location.path(path+project._id+"/tasks");
+    $scope.goDetail = function (project){
+        //For breadcrumb
+        //--------------
+        $rootScope.projectDetailUrl = "#/project/"+project._id+"/tasks";
+        $rootScope.projectDetailBtn = project.name;
+        //--------------
+        $location.path("/project/"+project._id+"/tasks");
+
+
     };
 }]);
-hourMachineControllers.controller('ProjectDetailController', ["$scope","$routeParams","$rootScope","$modal",'$location',"ProjectService","ProjectDetailService",
-                                                    function ($scope, $routeParams, $rootScope, $modal, $location, ProjectService, ProjectDetailService) {
+hourMachineControllers.controller('ProjectDetailController',
+    ["$scope","$routeParams","$rootScope","$modal",'$location',"ProjectDetailService",
+function ($scope, $routeParams, $rootScope, $modal, $location, ProjectDetailService) {
+    //For breadcrumb
+    //--------------
+    $rootScope.taskDetailBtnShow = false;
+    $rootScope.taskDetailBtnActive = false;
+    $rootScope.projectDetailBtnShow = true;
+    $rootScope.projectDetailBtnActive = true;
+    //--------------
+    ProjectDetailService.setCurrentProjectId($routeParams.project_id);
 
-        ProjectDetailService.setCurrentProject($routeParams.project_id);
+    ProjectDetailService.get()
+        .success(function(data) {
+            $scope.taskList = data.tasks;
+        });
 
-        ProjectDetailService.get()
-            .success(function(data) {
-                $scope.taskList = data;
-            });
+    $rootScope.clickNew = function () {
+        var startData = {
+            name:"",
+            totalHours:"00:00"
+        };
+        var modalSettings = {
+            title:"Add Task",
+            buttonName:"Save",
+            delbuttonhidden:"true",
+            templateUrl:'/partials/addedit.html'
+        };
 
-        $rootScope.clickNew = function () {
-            var startData = {
-                name:"",
-                totalHours:"00:00"
-            };
-            var modalSettings = {
-                title:"Add Task",
-                buttonName:"Save",
-                delbuttonhidden:"true",
-                templateUrl:'/partials/addedit.html'
-            };
-
-            cudModal($scope, $modal, modalSettings, startData,function(newData){
-                ProjectDetailService.create(newData.data)
+        cudModal($scope, $modal, modalSettings, startData,function(newData){
+            ProjectDetailService.create(newData.data)
+                .success(function(retData) {
+                    //$scope.projectList.push(data);
+                    $scope.taskList = retData.tasks;
+                });
+        });
+    };
+    $scope.editRow = function (data){
+        var modalSettings = {
+            title:"Edit Task",
+            buttonName:"Save",
+            delbuttonhidden:"false",
+            templateUrl:'/partials/addedit.html'
+        };
+        cudModal($scope, $modal, modalSettings, data,function(newData){
+            if(newData.del == "false"){
+                ProjectDetailService.update(newData.data)
                     .success(function(retData) {
-                        //$scope.projectList.push(data);
-                        $scope.taskList = retData;
+                        $scope.taskList = retData.tasks;
                     });
-            });
-        };
-        $scope.editRow = function (data){
-            var modalSettings = {
-                title:"Edit Task",
-                buttonName:"Save",
-                delbuttonhidden:"false",
-                templateUrl:'/partials/addedit.html'
-            };
-            cudModal($scope, $modal, modalSettings, data,function(newData){
-                if(newData.del == "false"){
-                    ProjectDetailService.update(newData.data)
-                        .success(function(retData) {
-                            $scope.taskList = retData;
-                        });
-                }else if(newData.del == "true"){
-                    ProjectDetailService.delete(newData.data.id)
-                        .success(function(retData) {
-                            $scope.taskList = retData;
-                        });
-                }
-            });
-        };
-        $scope.goTo = function (path, project){
-            $location.path(path+project.id);
-        };
-    }]);
+            }else if(newData.del == "true"){
+                ProjectDetailService.delete(newData.data.id)
+                    .success(function(retData) {
+                        $scope.taskList = retData.tasks;
+                    });
+            }
+        });
+    };
+    $scope.goDetail = function (task){
+        //For breadcrumb
+        //--------------
+        $rootScope.taskDetailUrl = "#/project/"+ProjectDetailService.getCurrentProjectId()+"/task/"+task._id+"/performs";
+        $rootScope.taskDetailBtn = task.name;
+        //--------------
+        $location.path("/project/"+ProjectDetailService.getCurrentProjectId()+"/task/"+task._id+"/performs");
+    };
+}]);
+//TaskDetailController
+hourMachineControllers.controller('TaskDetailController',
+    ["$scope","$routeParams","$rootScope","$modal",'$location',"TaskDetailService",
+function ($scope, $routeParams, $rootScope, $modal, $location, TaskDetailService) {
+    //For breadcrumb
+    //--------------
+    $rootScope.taskDetailBtnShow = true;
+    $rootScope.taskDetailBtnActive = true;
+    $rootScope.projectDetailBtnShow = true;
+    $rootScope.projectDetailBtnActive = false;
+    //--------------
+    TaskDetailService.setCurrentProjectId($routeParams.project_id);
+    TaskDetailService.setCurrentTaskId($routeParams.task_id);
 
+    TaskDetailService.get()
+        .success(function(data) {
+            $scope.performList = data;
+        });
+
+}]);
 //hourMachineControllers.controller('PerformsController', ["$scope","$rootScope","$modal", "PerformsService", function ($scope,$rootScope,$modal,PerformsService) {
 //    PerformsService.get()
 //        .success(function(data) {
@@ -139,11 +186,16 @@ hourMachineControllers.controller('ProjectDetailController', ["$scope","$routePa
 //    };
 //}]);
 
-hourMachineControllers.controller('MainController', ['$scope', '$modal', '$location',function($scope, $modal, $location) {
-    /*This is for activive menu button*/
-    $scope.isActive = function (viewLocation) {
-        return viewLocation === $location.path();
-    };
+hourMachineControllers.controller('MainController',
+    ["$scope","$routeParams","$modal",'$location',
+ function($scope, $routeParams, $modal, $location) {
+    //alert($location);
+     /*This is for activive menu button*/
+    ////<li ng-class="{ active: isActive('/login')}"><a href="#/login">Login</a></li>
+    //$scope.isActive = function (viewLocation) {
+    //    return viewLocation === $location.path();
+    //};
+
 //    $scope.clickNew = function () {
 //        if($location.path() === "/tasks"){
 //            $scope.addTask();
@@ -154,7 +206,6 @@ hourMachineControllers.controller('MainController', ['$scope', '$modal', '$locat
 //        }
 //    }
 }]);
-
 function cudModal($scope, $modal, settings, data, callback){
     var modalInstance = $modal.open({
         templateUrl: settings.templateUrl,

@@ -62,15 +62,15 @@
                 </div>
                 -->
                 <ul class="nav navbar-nav navbar-right">
-                    <li ng-class="{ active: isActive('/login')}"><a href="#/login">Login</a></li>
-                    <li ng-class="{ active: isActive('/projects')}"><a href="#/projects">Projects</a></li>
-                    <li ng-class="{ active: isActive('/tasks')}"><a href="#/tasks">Tasks</a></li>
-                    <li ng-class="{ active: isActive('/performs')}"><a href="#/performs">Performs</a></li>
+                    <!--<li ng-class="{ active: isActive('/login')}"><a href="#/login">Login</a></li>-->
+                    <!--<li ng-class="{ active: {{projectDetailActiveBtn}}}" ng-show="{{projectDetailShowBtn}}"><a href="{{projectDetailUrl}}">{{ projectNameBtn }}</a></li>-->
+                    <li><a href="#/projects">Projects</a></li>
+                    <li ng-class="{ active: projectDetailBtnActive}" ng-show="projectDetailBtnShow"><a href="{{projectDetailUrl}}">{{ projectDetailBtn }}</a></li>
+                    <li ng-class="{ active: taskDetailBtnActive}" ng-show="taskDetailBtnShow"><a href="{{taskDetailUrl}}">{{ taskDetailBtn }}</a></li>
                 </ul>
             </div>
         </div>
     </nav>
-    <div ng-show="selected">Name: {{ selected }}</div>
     <div class="view-container">
         <div ng-view class="view-frame"></div>
     </div>
