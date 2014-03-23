@@ -46,7 +46,6 @@ exports.create = function (req, res)
 
 exports.list = function (req, res)
 {
-    //TODO allen wat nodig is
 	Project.findById(req.params.project_id, function (err, project)
 	{
 		if (err || !project)
