@@ -32,7 +32,7 @@ exports.create = function (req, res)
 					return;
 				}
 
-				res.send(200, project.tasks);
+				res.send(200, project);
 			});
 
 		});
@@ -46,7 +46,7 @@ exports.create = function (req, res)
 
 exports.list = function (req, res)
 {
-    //TODO allen wat nodig is 
+    //TODO allen wat nodig is
 	Project.findById(req.params.project_id, function (err, project)
 	{
 		if (err || !project)
@@ -57,7 +57,7 @@ exports.list = function (req, res)
 
 		console.log("Listing tasks of project \"" + project.name + "\"...");
 
-		res.send(200, project.tasks);
+		res.send(200, project);
 
 	});
 }
