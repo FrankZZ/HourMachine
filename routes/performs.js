@@ -6,9 +6,11 @@ exports.create = function (req, res)
 {
 	var body = req.body;
 
-	console.log("Creating perform \"" + req.body.name + "\"...");
-
-	var performObj = {name: body.name};
+	console.log("Creating perform \"" + body.name + "\"...");
+    //var performObj = data = {"startDate" : "7113600000","endDate" : "7113800000","pauseTime" : "7083000000","comment": "blablasdbPIET"}
+    // of
+    //var performObj = {"startDate" : body.startDate,"endDate" : body.endDate,"pauseTime" : body.pauseTime,"comment": body.comment}
+	var performObj = body.name;
 	var perform = new Perform(performObj);
 
 	perform.save(function (err, perform)

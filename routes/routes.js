@@ -28,7 +28,7 @@ module.exports = function (app)
 
 
 	// *** Performs ***
-//	app.get('/api/task/task:id/performs', performs.list);
+	app.get('/api/task/task:id/performs', performs.list);
 
 	app.put('/api/perform/:perform_id', performs.update);
 

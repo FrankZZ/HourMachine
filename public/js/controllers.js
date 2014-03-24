@@ -86,7 +86,7 @@ function ($scope, $routeParams, $rootScope, $modal, $location, ProjectDetailServ
 
     ProjectDetailService.get()
         .success(function(data) {
-            $scope.taskList = data.tasks;
+            $scope.taskList = data;
         });
 
     $rootScope.clickNew = function () {
@@ -105,7 +105,7 @@ function ($scope, $routeParams, $rootScope, $modal, $location, ProjectDetailServ
             ProjectDetailService.create(newData.data)
                 .success(function(retData) {
                     //$scope.projectList.push(data);
-                    $scope.taskList = retData.tasks;
+                    $scope.taskList = retData;
                 });
         });
     };
@@ -120,12 +120,12 @@ function ($scope, $routeParams, $rootScope, $modal, $location, ProjectDetailServ
             if(newData.del == "false"){
                 ProjectDetailService.update(newData.data)
                     .success(function(retData) {
-                        $scope.taskList = retData.tasks;
+                        $scope.taskList = retData;
                     });
             }else if(newData.del == "true"){
                 ProjectDetailService.delete(newData.data.id)
                     .success(function(retData) {
-                        $scope.taskList = retData.tasks;
+                        $scope.taskList = retData;
                     });
             }
         });
@@ -189,6 +189,7 @@ function ($scope, $routeParams, $rootScope, $modal, $location, TaskDetailService
 hourMachineControllers.controller('MainController',
     ["$scope","$routeParams","$modal",'$location',
  function($scope, $routeParams, $modal, $location) {
+
     //alert($location);
      /*This is for activive menu button*/
     ////<li ng-class="{ active: isActive('/login')}"><a href="#/login">Login</a></li>
