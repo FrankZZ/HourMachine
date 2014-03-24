@@ -46,7 +46,7 @@ exports.create = function (req, res)
 
 exports.list = function (req, res)
 {
-	Project.findById(req.params.project_id, function (err, project)
+	Project.findById(req.params.project_id, 'tasks', function (err, project)
 	{
 		if (err || !project)
 		{
@@ -56,7 +56,7 @@ exports.list = function (req, res)
 
 		console.log("Listing tasks of project \"" + project.name + "\"...");
 
-		res.send(200, project);
+		res.send(200, project.tasks);
 
 	});
 }

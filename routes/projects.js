@@ -31,7 +31,7 @@ exports.create = function (req, res)
 
 exports.list = function (req, res)
 {
-	Project.find({}, '_id name')
+	Project.find({}, 'name totalHours')
 		.exec(function (err, projects)
 		{
 			res.json(projects);
