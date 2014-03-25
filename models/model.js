@@ -15,7 +15,7 @@ var performSchema = new mongoose.Schema({
 	pauseTime: Number,	// seconds
 	comment: String
 });
-performSchema.set('toJSON', { getters: true, virtuals: true });
+performSchema.set('toJSON', { getters: true, virtuals: true, transform: function(doc, ret, options) { delete ret.tasks; delete ret._id; delete ret.__v; return ret; } });
 performSchema.set('toObject', { getters: true, virtuals: true });
 
 performSchema.virtual('totalHours')
@@ -28,7 +28,7 @@ var taskSchema = new mongoose.Schema({
 	name: String,
 	performs: [performSchema]
 });
-taskSchema.set('toJSON', { getters: true, virtuals: true });
+taskSchema.set('toJSON', { getters: true, virtuals: true, transform: function(doc, ret, options) { delete ret.performs; delete ret._id; delete ret.__v; return ret; } });
 taskSchema.set('toObject', { getters: true, virtuals: true });
 
 taskSchema.virtual('totalHours')
@@ -55,7 +55,7 @@ var projectSchema = new mongoose.Schema({
 	tasks: [taskSchema]
 });
 
-projectSchema.set('toJSON', { getters: true, virtuals: true });
+projectSchema.set('toJSON', { getters: true, virtuals: true, transform: function(doc, ret, options) { delete ret.tasks; delete ret._id; delete ret.__v; return ret; } });
 projectSchema.set('toObject', { getters: true, virtuals: true });
 
 projectSchema.virtual('totalHours')

@@ -23,7 +23,7 @@ exports.create = function (req, res)
 					if (err2 || !projects)
 						res.send(500, err2);
 					else
-						res.json(projects);
+						res.send(201, project);
 				});
 		}
 	});
