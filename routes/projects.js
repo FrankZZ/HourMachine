@@ -24,7 +24,7 @@ exports.create = function (req, res)
 
 exports.list = function (req, res)
 {
-	Project.find({}, 'name totalHours')
+	Project.find({}, 'name tasks totalHours')
 		.exec(function (err, projects)
 		{
 			res.json(200, projects);
@@ -73,7 +73,7 @@ exports.delete = function (req, res)
 		else
 		{
 			console.log("Deleted project \"" + project.name + "\"...");
-			res.json(200, project); //OK
+			res.send(200); //OK
 		}
 	})
 }

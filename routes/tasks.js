@@ -5,99 +5,105 @@ var models = require('../models/model');
 var Task = models.Task;
 var Project = models.Project;
 
-
 exports.create = function (req, res)
 {
 	var body = req.body;
+	var params = req.params;
+	console.log("Creating task \"" + req.body.name + "\"...");
 
-	if ("name" in req.body)
+	var taskObj = {name: body.name};
+	var task = new Task(taskObj);
+
+
+	Project.findById(params.project_id, 'name tasks', function (err, project)
 	{
-		Project.findById(req.params.project_id, function (err, project)
+		if (!err && project)
 		{
-			if (err || !project)
+			console.log("Creating task \"" + body.name + "\" for project \"" + project.name + "\"...");
+
+			project.tasks.push(task);
+
+			project.save(function (err2)
 			{
-				res.send(404, err); //not found
-				return;
-			}
-
-			console.log("Creating task \"" + req.body.name + "\" for project \"" + project.name + "\"...");
-
-			project.tasks.push({name: body.name});
-
-			project.save(function (err)
-			{
-				if (err)
-				{
-					res.send(500, err); //server error
-					return;
-				}
-
-				res.send(200, project.tasks);
-			});
-
-		});
-	}
-	else
-	{
-		res.send(400); // invalid request
-	}
-
+				if (err2)
+					res.send(500, err2); //server error
+				else
+					res.json(201, task);
+			});ca
+		}
+		else
+			res.send(500, err);
+	});
 }
 
 exports.list = function (req, res)
 {
-	Project.findById(req.params.project_id, 'tasks', function (err, project)
+	Project.findById(req.params.project_id, 'tasks', function (err, projects)
 	{
-		if (err || !project)
-		{
-			res.send(404, err); //not found
-			return;
-		}
-
-		console.log("Listing tasks of project \"" + project.name + "\"...");
-
-		res.send(200, project.tasks);
-
+		res.json(200, projects.tasks);
 	});
 }
 
 exports.update = function (req, res)
 {
+	var params = req.params;
+	var body = req.body;
+
+	console.log("Updating task \"" + req.body.name + "\"...");
+
+	Project.findById(params.project_id, function (err, project)
+	{
+		if (err || !project)
+			res.send(500, err);
+		else
+		{
+			var task = project.tasks.id(params.task_id);
+			if (task)
+			{
+				task.name = body.name;
+
+				project.save(function (err, project)
+				{
+					if (err || !project)
+						res.send(500, err);
+					else
+					{
+						res.json(200, task); // 200 OK
+					}
+				});
+
+			}
+			else
+				res.send(404);
+		}
+	});
+
 
 }
 
 exports.delete = function (req, res)
 {
-	Project.findById(req.params.project_id, function (err, project)
+	var body = req.body;
+	var params = req.params;
+
+	console.log("Deleting task with id \"" + req.params.task_id + "\"...");
+
+	Project.findById(params.project_id, 'name tasks', function (err, project)
 	{
-		if (err || !project)
+		if (!err && project)
 		{
-			res.send(404, err); //not found
-			return;
-		}
+			// TODO: Error handling (not found)
+			project.tasks.pull(params.task_id);
 
-		console.log("Deleting task \"" + req.body.name + "\" of project \"" + project.name + "\"...");
-
-		var task = project.tasks.id(req.params.task_id);
-
-		if (task)
-		{
-			task.remove();
-
-			project.save(function (err)
+			project.save(function (err2)
 			{
-				if (err)
-				{
-					res.send(500, err); //server error
-					return;
-				}
-
-				res.send(200, project.tasks);
+				if (err2)
+					res.send(500, err2); //server error
+				else
+					res.send(200);
 			});
 		}
 		else
-		{
-			res.send(404, 'Cannot find task with ObjectId ' + req.params.task_id);
-		}
+			res.send(500, err);
 	});
 }

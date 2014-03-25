@@ -20,7 +20,7 @@ module.exports = function (app)
 	// *** Tasks ***
 	app.get('/api/project/:project_id/tasks', tasks.list);
 
-	app.put('/api/task/:task_id', tasks.update);
+	app.put('/api/project/:project_id/task/:task_id', tasks.update);
 
 	app.post('/api/project/:project_id/tasks', tasks.create);
 
@@ -28,12 +28,12 @@ module.exports = function (app)
 
 
 	// *** Performs ***
-	app.get('/api/task/task:id/performs', performs.list);
+	app.get('/api/project/:project_id/task/:task_id/performs', performs.list);
 
-	app.put('/api/perform/:perform_id', performs.update);
+	app.put('/api/project/:project_id/task/:task_id/perform/:perform_id', performs.update);
 
-	app.post('/api/task/:task_id/performs', performs.create);
+	app.post('/api/project/:project_id/task/:task_id/performs', performs.create);
 
-	app.delete('/api/perform/:perform_id', performs.delete);
+	app.delete('/api/project/:project_id/task/:task_id/perform/:perform_id', performs.delete);
 
 };

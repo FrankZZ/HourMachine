@@ -36,15 +36,9 @@ taskSchema.virtual('totalHours')
 	{
 		var totalHours = 0;
 
-		Task.findOne({_id: this.id}, 'performs', function (err, task)
+		this.performs.forEach(function (perform, index, array)
 		{
-			if (!err && task)
-			{
-				task.performs.forEach(function (perform, index, array)
-				{
-					totalHours += perform.totalHours;
-				});
-			}
+			totalHours += perform.totalHours;
 		});
 
 		return totalHours;
@@ -62,17 +56,10 @@ projectSchema.virtual('totalHours')
 	.get(function ()
 	{
 		var totalHours = 0;
-		Project.findOne({_id: this.id}, 'tasks', function (err, project)
+		this.tasks.forEach(function (task, index, array)
 		{
-			if (!err && project)
-			{
-				project.tasks.forEach(function (task, index, array)
-				{
-					totalHours += task.totalHours;
-				});
-			}
+			totalHours += task.totalHours;
 		});
-
 
 		return totalHours;
 	});
