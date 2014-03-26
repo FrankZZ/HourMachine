@@ -4,7 +4,7 @@
 
 var hourMachineServices = angular.module('hourMachineServices', ['ngResource']);
 
-hourMachineServices.factory('ProjectService', function($http){
+hourMachineServices.factory('ProjectService', function($http,$resource){
     return {
         get : function() {
             return $http.get('/api/projects');
@@ -12,8 +12,8 @@ hourMachineServices.factory('ProjectService', function($http){
         create : function(projectData) {
             return $http.post('/api/projects', projectData);
         },
-        delete : function(id) {
-            return $http.delete('/api/project/' + id);
+        delete : function(projectData) {
+            return $http.delete('/api/project/' + projectData.id);
         },
         update : function(projectData){
             return $http.put('/api/project/' + projectData.id, projectData);
@@ -21,7 +21,7 @@ hourMachineServices.factory('ProjectService', function($http){
     }
 });
 hourMachineServices.factory('ProjectDetailService', function($http){
-    var currentProjectId = null;
+    var currentProjectId = null
     return {
         get : function() {
             return $http.get('/api/project/'+currentProjectId+'/tasks/');
@@ -29,18 +29,20 @@ hourMachineServices.factory('ProjectDetailService', function($http){
         create : function(taskData) {
             return $http.post('/api/project/'+currentProjectId+'/tasks/', taskData);
         },
-        delete : function(id) {
-            return $http.delete('/api/project/'+currentProjectId+'/task/' + id);
+        delete : function(taskData) {
+            return $http.delete('/api/project/'+currentProjectId+'/task/' + taskData.id);
         },
         update : function(taskData){
             return $http.put('/api/project/'+currentProjectId+'/task/' + taskData.id, taskData);
         },
-        setCurrentProjectId : function(projectId) {
+        setCurrentProjectId : function(projectId){
             currentProjectId = projectId;
+        },
+        getCurrentProjectId : function(projectId){
             return currentProjectId;
         },
-        getCurrentProjectId : function() {
-            return currentProjectId;
+        getCurrentProjectName : function(){
+            return $http.get('/api/project/'+currentProjectId);
         }
     }
 });
@@ -51,44 +53,69 @@ hourMachineServices.factory('TaskDetailService', function($http){
         get : function() {
             return $http.get('/api/project/'+currentProjectId+'/task/'+currentTaskId+'/performs');
         },
-        create : function(taskData) {
-            return $http.post('/api/project/'+currentProjectId+'/task/'+currentTaskId+'/performs', taskData);
+        create : function(performData) {
+            return $http.post('/api/project/'+currentProjectId+'/task/'+currentTaskId+'/performs', performData);
         },
-        delete : function(id) {
-            return $http.delete('/api/project/'+currentProjectId+'/task/'+currentTaskId+'/perform/' + id);
+        delete : function(performData) {
+            return $http.delete('/api/project/'+currentProjectId+'/task/'+currentTaskId+'/perform/' + performData.id);
         },
-        update : function(taskData){
-            return $http.put('/api/project/'+currentProjectId+'/task/'+currentTaskId+'/perform/' + taskData.id, taskData);
+        update : function(performData){
+            return $http.put('/api/project/'+currentProjectId+'/task/'+currentTaskId+'/perform/' + performData.id, performData);
         },
-        setCurrentProjectId : function(projectId) {
+        setCurrentProjectIdAndTaskId : function(projectId,taskId){
             currentProjectId = projectId;
-            return currentProjectId;
-        },
-        getCurrentProjectId : function() {
-            return currentProjectId;
-        },
-        setCurrentTaskId : function(taskId) {
             currentTaskId = taskId;
+        },
+        getCurrentProjectId : function(projectId){
+            return currentProjectId;
+        },
+        getCurrentProjectName : function(){
+            return $http.get('/api/project/'+currentProjectId);
+        },
+        getCurrentTaskId : function(projectId){
             return currentTaskId;
         },
-        getCurrentTaskId : function() {
-            return currentTaskId;
+        getCurrentTaskName : function(){
+            return $http.get('/api/project/'+currentProjectId+'/task/'+currentTaskId);
         }
     }
 });
-//hourMachineServices.factory('PerformsService', function($http){
+
+//hourMachineServices.factory('ProjectService', function($http,$resource){
 //    return {
 //        get : function() {
-//            return $http.get('/api/performs');
+//            return $resource('/api/projects/', {}, {
+//                get: { method: 'GET', isArray: true }
+//            }).get();
 //        },
-//        create : function(performData) {
-//            return $http.post('/api/performs', performData);
+//        create : function(data) {
+//            $resource('/api/projects/', {},{
+//                create: {method:'POST'}
+//            }).create(data);
+//
+//            return this.get();
 //        },
-//        delete : function(id) {
-//            return $http.delete('/api/perform/' + id);
+//        delete : function(data) {
+//            data.project_id = data.id;
+//
+//            $resource('/api/project/:project_id', {}, {
+//                delete: { method: 'DELETE'}
+//            }).delete(data);
+//
+//            return this.get();
 //        },
-//        update : function(id,performData){
-//            return $http.put('/api/perform/' + id, performData);
+//        update : function(data){
+//            data.project_id = data.id;
+//            return $http.put('/api/project/'+ data.id, data);
 //        }
 //    }
-//});
+
+//update: { method: 'PUT', params: data}
+//update: { method: 'PUT', params:{project_id: '@project_id'}}
+
+//    return $resource('/api/projects/:project_id', {}, {
+//        get: {method:'GET', params:{}, isArray:true},
+//        create:{method:'POST'},
+//        update: { method: 'PUT', params: {project_id: '@id'} },
+//        delete: { method: 'DELETE', params: {project_id: '@id'} }
+//    });
