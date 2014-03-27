@@ -408,6 +408,7 @@ function($scope,$rootScope, $routeParams, $modal, $location) {
 hourMachineControllers.controller('loginController',
     ["$scope","$routeParams","$rootScope","$modal",'$location',
 function ($scope, $routeParams, $rootScope, $modal, $location) {
+    $rootScope.navBarHide = true;
      if(sessionStorage){
          if(sessionStorage.email){
              if (localStorage) {
@@ -415,6 +416,7 @@ function ($scope, $routeParams, $rootScope, $modal, $location) {
                      localStorage.urlpath = "/projects";
                  }
                  $location.path(localStorage.urlpath);
+                 $rootScope.navBarHide = false;
              }
          }
      }
@@ -427,6 +429,7 @@ function ($scope, $routeParams, $rootScope, $modal, $location) {
                      localStorage.urlpath = "/projects";
                  }
                  $location.path(localStorage.urlpath);
+                 $rootScope.navBarHide = false;
              }
          }
      }
