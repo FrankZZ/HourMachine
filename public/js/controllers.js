@@ -35,13 +35,8 @@ function ($scope, $routeParams, $rootScope, $modal, $location, ProjectService) {
 
         cudModal($scope, $modal, modalSettings, startData,function(newData){
             ProjectService.create(newData.data)
-            .success(function() {
-                ProjectService.get()
-                .success(function(data) {
-                    $scope.projectList = data;
-                }).error(function() {
-                    // TODO: error handling
-                });
+            .success(function(retData) {
+                $scope.projectList.push(retData);
             }).error(function() {
                 // TODO: error handling
             });
@@ -57,12 +52,13 @@ function ($scope, $routeParams, $rootScope, $modal, $location, ProjectService) {
         cudModal($scope, $modal, modalSettings, data,function(newData){
             if(newData.del == "false"){
                 ProjectService.update(newData.data)
-                .success(function() {
-                    ProjectService.get()
-                    .success(function(data) {
-                        $scope.projectList = data;
-                    }).error(function() {
-                        // TODO: error handling
+                .success(function(retData) {
+                    var index = 0;
+                    $scope.projectList.forEach(function(e) {
+                        if (e.id === retData.id) {
+                            $scope.projectList[index] = retData;
+                        }
+                        index++;
                     });
                 }).error(function() {
                     // TODO: error handling
@@ -70,11 +66,12 @@ function ($scope, $routeParams, $rootScope, $modal, $location, ProjectService) {
             }else if(newData.del == "true"){
                 ProjectService.delete(newData.data)
                 .success(function() {
-                    ProjectService.get()
-                    .success(function(data) {
-                        $scope.projectList = data;
-                    }).error(function() {
-                        // TODO: error handling
+                    var index = 0;
+                    $scope.projectList.forEach(function(e) {
+                        if (e.id === newData.data.id) {
+                            $scope.projectList.splice( index, 1 );
+                        }
+                        index++;
                     });
                 }).error(function() {
                     // TODO: error handling
@@ -130,13 +127,8 @@ function ($scope, $routeParams, $rootScope, $modal, $location, ProjectDetailServ
 
         cudModal($scope, $modal, modalSettings, startData,function(newData){
             ProjectDetailService.create(newData.data)
-            .success(function() {
-                ProjectDetailService.get()
-                .success(function(data) {
-                    $scope.taskList = data;
-                }).error(function() {
-                    // TODO: error handling
-                });
+            .success(function(retData) {
+                $scope.taskList.push(retData);
             }).error(function() {
                 // TODO: error handling
             });
@@ -152,12 +144,13 @@ function ($scope, $routeParams, $rootScope, $modal, $location, ProjectDetailServ
         cudModal($scope, $modal, modalSettings, data,function(newData){
             if(newData.del == "false"){
                 ProjectDetailService.update(newData.data)
-                .success(function() {
-                    ProjectDetailService.get()
-                    .success(function(data) {
-                        $scope.taskList = data;
-                    }).error(function() {
-                        // TODO: error handling
+                .success(function(retData) {
+                    var index = 0;
+                    $scope.taskList.forEach(function(e) {
+                        if (e.id === retData.id) {
+                            $scope.taskList[index] = retData;
+                        }
+                        index++;
                     });
                 }).error(function() {
                     // TODO: error handling
@@ -165,11 +158,12 @@ function ($scope, $routeParams, $rootScope, $modal, $location, ProjectDetailServ
             }else if(newData.del == "true"){
                 ProjectDetailService.delete(newData.data)
                 .success(function() {
-                    ProjectDetailService.get()
-                    .success(function(data) {
-                        $scope.taskList = data;
-                    }).error(function() {
-                        // TODO: error handling
+                    var index = 0;
+                    $scope.taskList.forEach(function(e) {
+                        if (e.id === newData.data.id) {
+                            $scope.taskList.splice( index, 1 );
+                        }
+                        index++;
                     });
                 }).error(function() {
                     // TODO: error handling
@@ -181,7 +175,7 @@ function ($scope, $routeParams, $rootScope, $modal, $location, ProjectDetailServ
         $location.path("/project/"+ProjectDetailService.getCurrentProjectId()+"/task/"+task.id+"/performs");
     };
 }]);
-//TaskDetailController
+
 hourMachineControllers.controller('TaskDetailController',
     ["$scope","$routeParams","$rootScope","$modal",'$location',"TaskDetailService",
 function ($scope, $routeParams, $rootScope, $modal, $location, TaskDetailService) {
@@ -258,13 +252,8 @@ function ($scope, $routeParams, $rootScope, $modal, $location, TaskDetailService
             //alert(" S "+retData.startDate +" E "+retData.endDate+" P "+retData.pauseTime+" C "+retData.comment);
 
             TaskDetailService.create(retData)
-                .success(function() {
-                    TaskDetailService.get()
-                        .success(function(data) {
-                            $scope.performList = data;
-                        }).error(function() {
-                            // TODO: error handling
-                        });
+                .success(function(retData) {
+                    $scope.performList.push(retData);
                 }).error(function() {
                     // TODO: error handling
                 });
@@ -324,25 +313,27 @@ function ($scope, $routeParams, $rootScope, $modal, $location, TaskDetailService
             if(newData.del == "false"){
                 //alert(retData.id+" "+retData.startDate+" "+retData.endDate+" "+retData.pauseTime+" "+retData.comment);
                 TaskDetailService.update(retData)
-                .success(function() {
-                    TaskDetailService.get()
-                        .success(function(data) {
-                            $scope.performList = data;
-                        }).error(function() {
-                            // TODO: error handling
-                        });
+                .success(function(retData) {
+                    var index = 0;
+                    $scope.performList.forEach(function(e) {
+                        if (e.id === retData.id) {
+                            $scope.performList[index] = retData;
+                        }
+                        index++;
+                    });
                 }).error(function() {
                     // TODO: error handling
                 });
             }else if(newData.del == "true"){
                 TaskDetailService.delete(retData)
                 .success(function() {
-                    TaskDetailService.get()
-                        .success(function(data) {
-                            $scope.performList = data;
-                        }).error(function() {
-                            // TODO: error handling
-                        });
+                    var index = 0;
+                    $scope.performList.forEach(function(e) {
+                        if (e.id === retData.id) {
+                            $scope.performList.splice( index, 1 );
+                        }
+                        index++;
+                    });
                 }).error(function() {
                     // TODO: error handling
                 });
