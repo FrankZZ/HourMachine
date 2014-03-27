@@ -14,7 +14,7 @@ function ($scope, $routeParams, $rootScope, $modal, $location, ProjectService) {
     $rootScope.projectDetailBtnShow = false;
     $rootScope.projectDetailBtnActive = false;
     //--------------
-    ProjectService.get()
+    ProjectService.list()
     .success(function(data) {
         $scope.projectList = data;
     }).error(function() {
@@ -106,7 +106,7 @@ function ($scope, $routeParams, $rootScope, $modal, $location, ProjectDetailServ
     //--------------
 
 
-    ProjectDetailService.get()
+    ProjectDetailService.list()
     .success(function(data) {
         $scope.taskList = data;
     }).error(function() {
@@ -206,7 +206,7 @@ function ($scope, $routeParams, $rootScope, $modal, $location, TaskDetailService
     $rootScope.projectDetailBtnShow = true;
     $rootScope.projectDetailBtnActive = false;
     //--------------
-    TaskDetailService.get()
+    TaskDetailService.list()
         .success(function(data) {
             $scope.performList = data;
         }).error(function() {
@@ -269,18 +269,20 @@ function ($scope, $routeParams, $rootScope, $modal, $location, TaskDetailService
 
         var startDate = new Date();
         startDate.setTime(data.startDate*1000);
+        var startDateString =startDate.toTimeString().replace(/.*(\d{2}:\d{2}):\d{2}.*/, "$1");
+
         var endDate = new Date();
         endDate.setTime(data.endDate*1000);
+        var endDateString =endDate.toTimeString().replace(/.*(\d{2}:\d{2}):\d{2}.*/, "$1");
 
         var pauseTime = new Date("1/1/1970 ");
         pauseTime.setSeconds(data.pauseTime);
+        var pauseTimeString =pauseTime.toTimeString().replace(/.*(\d{2}:\d{2}):\d{2}.*/, "$1");
 
         var dateString = startDate.getFullYear()+"-"+((startDate.getMonth() < 10) ? "0"+(startDate.getMonth()+1) : (startDate.getMonth()+1))+"-"+((startDate.getDate() < 10) ? "0"+startDate.getDate() : startDate.getDate());
-
-        var startDateString = ((startDate.getHours() < 10) ? "0"+(startDate.getHours()) : (startDate.getHours()))+":"+((startDate.getMinutes() < 10) ? "0"+(startDate.getMinutes()) : (startDate.getMinutes()));
-
-        var endDateString = ((endDate.getHours() < 10) ? "0"+(endDate.getHours()) : (endDate.getHours()))+":"+((endDate.getMinutes() < 10) ? "0"+(endDate.getMinutes()) : (endDate.getMinutes()));
-        var pauseTimeString = ((pauseTime.getHours() < 10) ? "0"+(pauseTime.getHours()) : (pauseTime.getHours()))+":"+((pauseTime.getMinutes() < 10) ? "0"+(pauseTime.getMinutes()) : (pauseTime.getMinutes()));
+        //var startDateString = ((startDate.getHours() < 10) ? "0"+(startDate.getHours()) : (startDate.getHours()))+":"+((startDate.getMinutes() < 10) ? "0"+(startDate.getMinutes()) : (startDate.getMinutes()));
+        //var endDateString = ((endDate.getHours() < 10) ? "0"+(endDate.getHours()) : (endDate.getHours()))+":"+((endDate.getMinutes() < 10) ? "0"+(endDate.getMinutes()) : (endDate.getMinutes()));
+        //var pauseTimeString = ((pauseTime.getHours() < 10) ? "0"+(pauseTime.getHours()) : (pauseTime.getHours()))+":"+((pauseTime.getMinutes() < 10) ? "0"+(pauseTime.getMinutes()) : (pauseTime.getMinutes()));
         var dataRow = {
             id:data.id,
             date:dateString ,
@@ -389,7 +391,7 @@ function cudModal($scope, $modal, settings, data, callback){
 
                     var date = new Date("1/1/1970 ");
                     if(retSecondens >0){
-                        date.setSeconds((endDate -startDate)-pauseTime);
+                        date.setSeconds(retSecondens);
                     }else{
                         date.setSeconds(0);
                     }

@@ -43,6 +43,27 @@ exports.list = function (req, res)
 		res.json(200, projects.tasks);
 	});
 }
+exports.get = function (req, res)
+{
+    var params = req.params;
+
+    Project.findById(params.project_id, function (err, project)
+    {
+        if (err || !project)
+            res.send(500, err);
+        else
+        {
+            var task = project.tasks.id(params.task_id);
+            if (task)
+            {
+                res.json(200, task);
+
+            }
+            else
+                res.send(404);
+        }
+    });
+}
 
 exports.update = function (req, res)
 {

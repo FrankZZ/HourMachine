@@ -10,6 +10,8 @@ module.exports = function (app)
 	// *** Projects ***
 	app.get('/api/projects', projects.list);
 
+    app.get('/api/project/:project_id', projects.get);//!!!
+
 	app.put('/api/project/:project_id', projects.update);
 
 	app.post('/api/projects', projects.create);
@@ -20,6 +22,8 @@ module.exports = function (app)
 	// *** Tasks ***
 	app.get('/api/project/:project_id/tasks', tasks.list);
 
+    app.get('/api/project/:project_id/task/:task_id', tasks.get);//!!!
+
 	app.put('/api/project/:project_id/task/:task_id', tasks.update);
 
 	app.post('/api/project/:project_id/tasks', tasks.create);
@@ -29,6 +33,8 @@ module.exports = function (app)
 
 	// *** Performs ***
 	app.get('/api/project/:project_id/task/:task_id/performs', performs.list);
+
+    app.get('/api/project/:project_id/task/:task_id/perform/:perform_id', performs.get);//!!!
 
 	app.put('/api/project/:project_id/task/:task_id/perform/:perform_id', performs.update);
 

@@ -30,6 +30,20 @@ exports.list = function (req, res)
 			res.json(200, projects);
 		});
 }
+exports.get = function (req, res)
+{
+    Project.findById(req.params.project_id, function (err, project)
+    {
+        if (err || !project)
+        {
+            res.send(500, err);
+        }
+        else
+        {
+            res.json(200, project); // 200 OK
+        }
+    });
+}
 
 exports.update = function (req, res)
 {

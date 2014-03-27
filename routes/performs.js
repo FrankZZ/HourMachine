@@ -59,7 +59,26 @@ exports.list = function (req, res)
 	});
 
 }
+exports.get = function (req, res)
+{
+    var params = req.params;
 
+
+    Project.findById(params.project_id, function (err, project)
+    {
+        var task = project.tasks.id(params.task_id);
+
+        if (!err && task)
+        {
+
+            var perform = task.performs.id(params.perform_id);
+
+            res.send(200, perform);
+        }
+        else
+            res.send(500);
+    });
+}
 exports.update = function (req, res)
 {
 	var params = req.params;

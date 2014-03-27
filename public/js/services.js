@@ -6,7 +6,7 @@ var hourMachineServices = angular.module('hourMachineServices', ['ngResource']);
 
 hourMachineServices.factory('ProjectService', function($http,$resource){
     return {
-        get : function() {
+        list : function() {
             return $http.get('/api/projects');
         },
         create : function(projectData) {
@@ -23,7 +23,7 @@ hourMachineServices.factory('ProjectService', function($http,$resource){
 hourMachineServices.factory('ProjectDetailService', function($http){
     var currentProjectId = null
     return {
-        get : function() {
+        list : function() {
             return $http.get('/api/project/'+currentProjectId+'/tasks/');
         },
         create : function(taskData) {
@@ -50,7 +50,7 @@ hourMachineServices.factory('TaskDetailService', function($http){
     var currentProjectId = null;
     var currentTaskId = null;
     return {
-        get : function() {
+        list : function() {
             return $http.get('/api/project/'+currentProjectId+'/task/'+currentTaskId+'/performs');
         },
         create : function(performData) {
