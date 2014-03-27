@@ -2,6 +2,7 @@
 
 /* Filters */
 var hourMachineFilters = angular.module('hourMachineFilters', []);
+
 hourMachineFilters.filter('searchForName', function() {
     return function(arr, searchString){
         if(!searchString){

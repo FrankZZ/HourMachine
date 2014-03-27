@@ -1,7 +1,6 @@
 'use strict';
 
 /* Services */
-
 var hourMachineServices = angular.module('hourMachineServices', ['ngResource']);
 
 hourMachineServices.factory('ProjectService', function($http,$resource){

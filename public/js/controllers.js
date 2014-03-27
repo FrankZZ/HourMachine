@@ -1,23 +1,13 @@
 'use strict';
 
 /* Controllers */
-
 var hourMachineControllers = angular.module('hourMachineControllers', []);
 
 hourMachineControllers.controller('ProjectController',
     ["$scope","$routeParams","$rootScope","$modal",'$location',"ProjectService",
 function ($scope, $routeParams, $rootScope, $modal, $location, ProjectService){
-    //For breadcrumb
-    //--------------
-    $rootScope.taskDetailBtnShow = false;
-    $rootScope.taskDetailBtnActive = false;
-    $rootScope.projectDetailBtnShow = false;
-    $rootScope.projectDetailBtnActive = false;
-    //--------------
 
-    if (localStorage) {
-        localStorage.urlpath = "/projects";
-    }
+    $rootScope.setProject();
 
     ProjectService.list()
     .success(function(data) {
@@ -35,7 +25,7 @@ function ($scope, $routeParams, $rootScope, $modal, $location, ProjectService){
             title:"Add Project",
             buttonName:"Save",
             delbuttonhidden:"true",
-            templateUrl:'/partials/addedit.html'
+            templateUrl:'/partials/cud.html'
         };
 
         cudModal($scope, $modal, modalSettings, startData,function(newData){
@@ -52,7 +42,7 @@ function ($scope, $routeParams, $rootScope, $modal, $location, ProjectService){
             title:"Edit Project",
             buttonName:"Save",
             delbuttonhidden:"false",
-            templateUrl:'/partials/addedit.html'
+            templateUrl:'/partials/cud.html'
         };
         cudModal($scope, $modal, modalSettings, data,function(newData){
             if(newData.del == "false"){
@@ -86,32 +76,22 @@ function ($scope, $routeParams, $rootScope, $modal, $location, ProjectService){
     };
     $scope.goDetail = function (project){
         $location.path("/project/"+project.id+"/tasks");
+
     };
 }]);
 hourMachineControllers.controller('ProjectDetailController',
     ["$scope","$routeParams","$rootScope","$modal",'$location',"ProjectDetailService",
 function ($scope, $routeParams, $rootScope, $modal, $location, ProjectDetailService) {
-    //For breadcrumb
-    //--------------
+
     ProjectDetailService.setCurrentProjectId($routeParams.project_id);
 
-    $rootScope.projectDetailUrl = "#/project/"+$routeParams.project_id+"/tasks";
     ProjectDetailService.getCurrentProjectName()
     .success(function(data) {
-        $rootScope.projectDetailBtn = data.name;
+        $rootScope.setProjectDetail(data);
     }).error(function() {
         // TODO: error handling
-        $rootScope.projectDetailBtn = "Pro";
-    });
 
-    $rootScope.taskDetailBtnShow = false;
-    $rootScope.taskDetailBtnActive = false;
-    $rootScope.projectDetailBtnShow = true;
-    $rootScope.projectDetailBtnActive = true;
-    //--------------
-    if (localStorage) {
-        localStorage.urlpath = "/project/"+$routeParams.project_id+"/tasks";
-    }
+    });
 
     ProjectDetailService.list()
     .success(function(data) {
@@ -129,7 +109,7 @@ function ($scope, $routeParams, $rootScope, $modal, $location, ProjectDetailServ
             title:"Add Task",
             buttonName:"Save",
             delbuttonhidden:"true",
-            templateUrl:'/partials/addedit.html'
+            templateUrl:'/partials/cud.html'
         };
 
         cudModal($scope, $modal, modalSettings, startData,function(newData){
@@ -146,7 +126,7 @@ function ($scope, $routeParams, $rootScope, $modal, $location, ProjectDetailServ
             title:"Edit Task",
             buttonName:"Save",
             delbuttonhidden:"false",
-            templateUrl:'/partials/addedit.html'
+            templateUrl:'/partials/cud.html'
         };
         cudModal($scope, $modal, modalSettings, data,function(newData){
             if(newData.del == "false"){
@@ -179,46 +159,29 @@ function ($scope, $routeParams, $rootScope, $modal, $location, ProjectDetailServ
         });
     };
     $scope.goDetail = function (task){
-        if (localStorage) {
-            localStorage.urlpath = "/project/"+ProjectDetailService.getCurrentProjectId()+"/task/"+task.id+"/performs";
-        }
-        $location.path("/project/"+ProjectDetailService.getCurrentProjectId()+"/task/"+task.id+"/performs");
+        $location.path("/project/"+$routeParams.project_id+"/task/"+task.id+"/performs");
     };
 }]);
 
 hourMachineControllers.controller('TaskDetailController',
     ["$scope","$routeParams","$rootScope","$modal",'$location',"TaskDetailService",
 function ($scope, $routeParams, $rootScope, $modal, $location, TaskDetailService) {
-    //For breadcrumb
-    //--------------
+
     TaskDetailService.setCurrentProjectIdAndTaskId($routeParams.project_id,$routeParams.task_id);
 
-    $rootScope.projectDetailUrl = "#/project/"+$routeParams.project_id+"/tasks";
     TaskDetailService.getCurrentProjectName()
-    .success(function(data) {
-        $rootScope.projectDetailBtn = data.name;
+    .success(function(dataProject) {
+        TaskDetailService.getCurrentTaskName()
+        .success(function(dataTask) {
+                $rootScope.setTaskDetail(dataProject,dataTask);
+        }).error(function() {
+            // TODO: error handling
+
+        });
     }).error(function() {
         // TODO: error handling
-        $rootScope.projectDetailBtn = "Pro";
-    });
 
-    $rootScope.taskDetailUrl = "#/project/"+$routeParams.project_id+"/task/"+$routeParams.task_id/+"/performs";
-    TaskDetailService.getCurrentTaskName()
-    .success(function(data) {
-        $rootScope.taskDetailBtn = data.name;
-    }).error(function() {
-        // TODO: error handling
-        $rootScope.taskDetailBtn = "Tas";
     });
-
-    $rootScope.taskDetailBtnShow = true;
-    $rootScope.taskDetailBtnActive = true;
-    $rootScope.projectDetailBtnShow = true;
-    $rootScope.projectDetailBtnActive = false;
-    //--------------
-    if (localStorage) {
-        localStorage.urlpath = "/project/"+$routeParams.project_id+"/task/"+$routeParams.task_id/+"/performs";
-    }
 
 
     TaskDetailService.list()
@@ -243,7 +206,7 @@ function ($scope, $routeParams, $rootScope, $modal, $location, TaskDetailService
             title:"Add Perform",
             buttonName:"Save",
             delbuttonhidden:"true",
-            templateUrl:'/partials/addeditperform.html'
+            templateUrl:'/partials/cudPerform.html'
         };
 
         cudModal($scope, $modal, modalSettings, startData,function(newData){
@@ -279,7 +242,7 @@ function ($scope, $routeParams, $rootScope, $modal, $location, TaskDetailService
             title:"Edit Perform",
             buttonName:"Save",
             delbuttonhidden:"false",
-            templateUrl:'/partials/addeditperform.html'
+            templateUrl:'/partials/cudPerform.html'
         };
 
         var startDate = new Date();
@@ -359,44 +322,114 @@ function ($scope, $routeParams, $rootScope, $modal, $location, TaskDetailService
         });
     };
     $scope.goDetail = function (perform){
-//        if (localStorage) {
-//            localStorage.urlpath = "/project/"+ProjectDetailService.getCurrentProjectId()+"/task/"+task._id+"/performs";
-//        }
-//        $location.path("/project/"+ProjectDetailService.getCurrentProjectId()+"/task/"+task._id+"/performs");
+
     };
 
 }]);
 
 hourMachineControllers.controller('MainController',
-    ["$scope","$routeParams","$modal",'$location',
- function($scope, $routeParams, $modal, $location) {
-     /*
-      * check browser supports local storage
-      */
-     if (localStorage) {
-         if(!localStorage.urlpath){
-             localStorage.urlpath = "/projects";
-         }
-         $location.path(localStorage.urlpath);
-     }
-     $scope.clearLocalStorage= function () {
-         localStorage.clear();
-     };
-     /*This is for activive menu button*/
-//    <li ng-class="{ active: isActive('/login')}"><a href="#/login">Login</a></li>
-//    $scope.isActive = function (viewLocation) {
-//        return viewLocation === $location.path();
-//    };
+    ["$scope","$rootScope","$routeParams","$modal",'$location',
+function($scope,$rootScope, $routeParams, $modal, $location) {
 
-//    $scope.clickNew = function () {
-//        if($location.path() === "/tasks"){
-//            $scope.addTask();
-//        }else if($location.path() === "/projects"){
-//            $scope.addProject();
-//        }else if($location.path() === "/performs"){
-//            $scope.addPerform();
-//        }
-//    }
+    $rootScope.setProject = function(){
+        //For breadcrumb
+        //--------------
+        $scope.taskDetailBtnShow = false;
+        $scope.taskDetailBtnActive = false;
+        $scope.projectDetailBtnShow = false;
+        $scope.projectDetailBtnActive = false;
+        //--------------
+
+        if (localStorage) {
+            localStorage.urlpath = "/projects";
+        }
+        if(sessionStorage){
+            if(!sessionStorage.email){
+                $location.path("/login");
+            }
+        }
+    }
+
+    $rootScope.setProjectDetail = function(project){
+        //For breadcrumb
+        //--------------
+        $scope.projectDetailUrl = "#/project/"+project.id+"/tasks";
+        $scope.projectDetailBtn = project.name;
+
+        $scope.taskDetailBtnShow = false;
+        $scope.taskDetailBtnActive = false;
+        $scope.projectDetailBtnShow = true;
+        $scope.projectDetailBtnActive = true;
+        //--------------
+
+        if (localStorage) {
+            localStorage.urlpath = "/project/"+project.id+"/tasks";
+        }
+        if(sessionStorage){
+            if(!sessionStorage.email){
+                $location.path("/login");
+            }
+        }
+    }
+    $rootScope.setTaskDetail = function(project,task){
+        //For breadcrumb
+        //--------------
+        $scope.projectDetailUrl = "#/project/"+project.id+"/tasks";
+        $scope.projectDetailBtn = project.name;
+
+        $scope.taskDetailUrl = "#/project/"+project.id+"/task/"+task.id+"/performs";
+        $scope.taskDetailBtn = task.name;
+
+        $scope.taskDetailBtnShow = true;
+        $scope.taskDetailBtnActive = true;
+        $scope.projectDetailBtnShow = true;
+        $scope.projectDetailBtnActive = false;
+        //--------------
+        if (localStorage) {
+            localStorage.urlpath = "/project/"+project.id+"/task/"+task.id+"/performs";
+        }
+        if(sessionStorage){
+            if(!sessionStorage.email){
+                $location.path("/login");
+            }
+        }
+    }
+
+    $scope.clearLocalStorage = function () {
+        localStorage.clear();
+    };
+    $scope.logout = function () {
+        sessionStorage.clear();
+        $location.path("/login");
+    }
+}]);
+
+
+hourMachineControllers.controller('loginController',
+    ["$scope","$routeParams","$rootScope","$modal",'$location',
+function ($scope, $routeParams, $rootScope, $modal, $location) {
+     if(sessionStorage){
+         if(sessionStorage.email){
+             if (localStorage) {
+                 if(!localStorage.urlpath){
+                     localStorage.urlpath = "/projects";
+                 }
+                 $location.path(localStorage.urlpath);
+             }
+         }
+     }
+     $scope.login= function () {
+         if(sessionStorage){
+             sessionStorage.email = $scope.email;
+             //TODO request server
+             if (localStorage) {
+                 if(!localStorage.urlpath){
+                     localStorage.urlpath = "/projects";
+                 }
+                 $location.path(localStorage.urlpath);
+             }
+         }
+     }
 }]);
 function cudModal($scope, $modal, settings, data, callback){
     var modalInstance = $modal.open({
@@ -409,6 +442,7 @@ function cudModal($scope, $modal, settings, data, callback){
             $scope.data = angular.copy(data);
 
             $scope.setTime = function(){
+                //FOR THE LIVE TotalTime
                 if($scope.data.fromTime != "" && $scope.data.toTime != ""){
 
                     var startDate = new Date("1/1/1970 "+angular.copy($scope.data.fromTime)).getTime() / 1000;

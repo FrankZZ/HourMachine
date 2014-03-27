@@ -2,14 +2,3 @@ body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
-
-.mainmenu ul{
-    padding: 0px;
-
-}
-.mainmenu li {
-    display: inline;
- }
-.dropdown-menu li {
-    display: list-item;
-}

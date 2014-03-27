@@ -35,8 +35,6 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand" href="#">HourMachine</a>
-                <!--<div id="add-button" class="navbar-text glyphicon glyphicon-plus-sign"></div>-->
-                <!--<button class="btn btn-default navbar-btn" ng-click="addProject()"><span class="glyphicon glyphicon-plus"></span></button>-->
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
@@ -48,8 +46,6 @@
                     </div>
                 </form>
                 <ul class="nav navbar-nav navbar-right">
-                    <!--<li ng-class="{ active: isActive('/login')}"><a href="#/login">Login</a></li>-->
-                    <!--<li ng-class="{ active: {{projectDetailActiveBtn}}}" ng-show="{{projectDetailShowBtn}}"><a href="{{projectDetailUrl}}">{{ projectNameBtn }}</a></li>-->
                     <li><a href="#/projects">Projects</a></li>
                     <li ng-class="{ active: projectDetailBtnActive}" ng-show="projectDetailBtnShow"><a href="{{projectDetailUrl}}">{{ projectDetailBtn }}</a></li>
                     <li ng-class="{ active: taskDetailBtnActive}" ng-show="taskDetailBtnShow"><a href="{{taskDetailUrl}}">{{ taskDetailBtn }}</a></li>
@@ -61,7 +57,7 @@
         <div ng-view class="view-frame"></div>
     </section>
     <footer>
-        <a href="" ng-click="clearLocalStorage()">Clear LocalStorage</a>
+        <a href="" ng-click="clearLocalStorage()">Clear LocalStorage</a> - <a href="" ng-click="logout()">Logout</a>
     </footer>
 </body>
 </html>

@@ -1,11 +1,10 @@
 'use strict';
 
 /* App Module */
-
 var hourMachineApp = angular.module('hourMachineApp', [
   'ngRoute',
   'hourMachineAnimations',
-
+  'hourMachineDirectives',
   'hourMachineControllers',
   'hourMachineFilters',
   'hourMachineServices',
@@ -17,7 +16,7 @@ hourMachineApp.config(['$routeProvider',
     $routeProvider.
         when('/login', {
             templateUrl: 'partials/login.html',
-            controller: 'MainController'
+            controller: 'loginController'
         }).
         when('/projects', {
             templateUrl: 'partials/projects.html',
@@ -32,7 +31,7 @@ hourMachineApp.config(['$routeProvider',
             controller: 'TaskDetailController'
         }).
         otherwise({
-            redirectTo: '/projects'
+            redirectTo: '/login'
         });
   }]);
 
