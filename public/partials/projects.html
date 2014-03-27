@@ -10,7 +10,7 @@
         <tbody>
             <tr ng-repeat="project in projectList" >
                 <td ng-click="goDetail(project)">{{project.name }}</td>
-                <td ng-click="goDetail(project)">{{project.totalHours }}</td>
+                <td ng-click="goDetail(project)">{{project.totalTimeString }}</td>
                 <td ng-click="editRow(project)"><span class="glyphicon glyphicon-pencil" ></span></td>
             </tr>
         </tbody>

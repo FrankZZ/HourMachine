@@ -18,12 +18,27 @@ var performSchema = new mongoose.Schema({
 performSchema.set('toJSON', { getters: true, virtuals: true, transform: function(doc, ret, options) { delete ret.tasks; delete ret._id; delete ret.__v; return ret; } });
 performSchema.set('toObject', { getters: true, virtuals: true });
 
-performSchema.virtual('totalHours')
+performSchema.virtual('totalTime')
 	.get(function ()
 	{
 		return (this.endDate - this.startDate) - this.pauseTime;
 	});
-
+performSchema.virtual('dateString')
+    .get(function ()
+    {
+        var startDate = new Date();
+        startDate.setTime(this.startDate*1000);
+        var dateString = ((startDate.getDate() < 10) ? "0"+startDate.getDate() : startDate.getDate())+"-"+((startDate.getMonth() < 10) ? "0"+(startDate.getMonth()+1) : (startDate.getMonth()+1))+"-"+startDate.getFullYear();
+        return dateString;
+    });
+performSchema.virtual('totalTimeString')
+    .get(function ()
+    {
+        var date = new Date("1/1/1970 ");
+        date.setSeconds(this.totalTime);
+        var totalTimeString =  date.toTimeString().replace(/.*(\d{2}:\d{2}):\d{2}.*/, "$1");
+        return totalTimeString;
+    });
 var taskSchema = new mongoose.Schema({
 	name: String,
 	performs: [performSchema]
@@ -31,19 +46,26 @@ var taskSchema = new mongoose.Schema({
 taskSchema.set('toJSON', { getters: true, virtuals: true, transform: function(doc, ret, options) { delete ret.performs; delete ret._id; delete ret.__v; return ret; } });
 taskSchema.set('toObject', { getters: true, virtuals: true });
 
-taskSchema.virtual('totalHours')
+taskSchema.virtual('totalTime')
 	.get(function ()
 	{
-		var totalHours = 0;
+		var totalTime = 0;
 
 		this.performs.forEach(function (perform, index, array)
 		{
-			totalHours += perform.totalHours;
+			totalTime += perform.totalTime;
 		});
 
-		return totalHours;
+		return totalTime;
 	});
-
+taskSchema.virtual('totalTimeString')
+    .get(function ()
+    {
+        var date = new Date("1/1/1970 ");
+        date.setSeconds(this.totalTime);
+        var totalTimeString =  date.toTimeString().replace(/.*(\d{2}:\d{2}):\d{2}.*/, "$1");
+        return totalTimeString;
+    });
 var projectSchema = new mongoose.Schema({
 	name: String,
 	tasks: [taskSchema]
@@ -52,17 +74,25 @@ var projectSchema = new mongoose.Schema({
 projectSchema.set('toJSON', { getters: true, virtuals: true, transform: function(doc, ret, options) { delete ret.tasks; delete ret._id; delete ret.__v; return ret; } });
 projectSchema.set('toObject', { getters: true, virtuals: true });
 
-projectSchema.virtual('totalHours')
+projectSchema.virtual('totalTime')
 	.get(function ()
 	{
-		var totalHours = 0;
+		var totalTime = 0;
 		this.tasks.forEach(function (task, index, array)
 		{
-			totalHours += task.totalHours;
+			totalTime += task.totalTime;
 		});
 
-		return totalHours;
+		return totalTime;
 	});
+projectSchema.virtual('totalTimeString')
+    .get(function ()
+    {
+        var date = new Date("1/1/1970 ");
+        date.setSeconds(this.totalTime);
+        var totalTimeString =  date.toTimeString().replace(/.*(\d{2}:\d{2}):\d{2}.*/, "$1");
+        return totalTimeString;
+    });
 
 exports.PerformSchema = performSchema;
 exports.ProjectSchema = projectSchema;

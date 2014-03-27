@@ -279,7 +279,9 @@ function ($scope, $routeParams, $rootScope, $modal, $location, TaskDetailService
         pauseTime.setSeconds(data.pauseTime);
         var pauseTimeString =pauseTime.toTimeString().replace(/.*(\d{2}:\d{2}):\d{2}.*/, "$1");
 
-        var dateString = startDate.getFullYear()+"-"+((startDate.getMonth() < 10) ? "0"+(startDate.getMonth()+1) : (startDate.getMonth()+1))+"-"+((startDate.getDate() < 10) ? "0"+startDate.getDate() : startDate.getDate());
+        var date = data.dateString.split("-");
+        var dateString = date[2]+"-"+date[1]+"-"+date[0];
+        //var dateString = startDate.getFullYear()+"-"+((startDate.getMonth() < 10) ? "0"+(startDate.getMonth()+1) : (startDate.getMonth()+1))+"-"+((startDate.getDate() < 10) ? "0"+startDate.getDate() : startDate.getDate());
         //var startDateString = ((startDate.getHours() < 10) ? "0"+(startDate.getHours()) : (startDate.getHours()))+":"+((startDate.getMinutes() < 10) ? "0"+(startDate.getMinutes()) : (startDate.getMinutes()));
         //var endDateString = ((endDate.getHours() < 10) ? "0"+(endDate.getHours()) : (endDate.getHours()))+":"+((endDate.getMinutes() < 10) ? "0"+(endDate.getMinutes()) : (endDate.getMinutes()));
         //var pauseTimeString = ((pauseTime.getHours() < 10) ? "0"+(pauseTime.getHours()) : (pauseTime.getHours()))+":"+((pauseTime.getMinutes() < 10) ? "0"+(pauseTime.getMinutes()) : (pauseTime.getMinutes()));
@@ -311,7 +313,6 @@ function ($scope, $routeParams, $rootScope, $modal, $location, TaskDetailService
                 pauseTime: pauseTime,	// seconds
                 comment: newData.data.comment
             };
-
             if(newData.del == "false"){
                 //alert(retData.id+" "+retData.startDate+" "+retData.endDate+" "+retData.pauseTime+" "+retData.comment);
                 TaskDetailService.update(retData)
@@ -351,7 +352,6 @@ function ($scope, $routeParams, $rootScope, $modal, $location, TaskDetailService
 hourMachineControllers.controller('MainController',
     ["$scope","$routeParams","$modal",'$location',
  function($scope, $routeParams, $modal, $location) {
-
      /*This is for activive menu button*/
 //    <li ng-class="{ active: isActive('/login')}"><a href="#/login">Login</a></li>
 //    $scope.isActive = function (viewLocation) {

@@ -10,8 +10,8 @@
         </thead>
         <tbody>
             <tr ng-repeat="perform in performList" >
-                <td >DATUM!!!</td>
-                <td >{{perform.totalHours }}</td>
+                <td >{{perform.dateString }}</td>
+                <td >{{perform.totalTimeString }}</td>
                 <td ng-click="editRow(perform)"><span class="glyphicon glyphicon-pencil" ></span></td>
             </tr>
         </tbody>
