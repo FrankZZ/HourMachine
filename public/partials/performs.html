@@ -1,15 +1,14 @@
-
 <div class="panel panel-warning" >
     <div class="panel-heading">Performs</div>
     <table class="table table-hover">
         <thead>
             <tr>
-                <th>Day</th>
-                <th>Total Hours</th>
+                <th>Day <a href="" class="glyphicon glyphicon-sort"ng-click="predicate = 'dateString'; reverse=!reverse"></a></th>
+                <th>Total Hours <a href="" class="glyphicon glyphicon-sort"ng-click="predicate = 'totalTimeString'; reverse=!reverse"></a></th>
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="perform in performList" >
+            <tr ng-repeat="perform in performList | searchForDate:searchString | orderBy:predicate:reverse" >
                 <td >{{perform.dateString }}</td>
                 <td >{{perform.totalTimeString }}</td>
                 <td ng-click="editRow(perform)"><span class="glyphicon glyphicon-pencil" ></span></td>

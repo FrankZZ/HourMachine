@@ -39,28 +39,14 @@
                 <!--<button class="btn btn-default navbar-btn" ng-click="addProject()"><span class="glyphicon glyphicon-plus"></span></button>-->
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <button class="btn btn-success navbar-btn" ng-click="clickNew()">NEW</button>
-                <!--
-                <div class="btn-group" data-toggle="buttons">
-                    <label class="btn btn-default navbar-btn active">
-                        <input type="radio" name="options" id="day"> Day
-                    </label>
-                    <label class="btn btn-default navbar-btn">
-                        <input type="radio" name="options" id="week"> Week
-                    </label>
-                    <label class="btn btn-default navbar-btn">
-                        <input type="radio" name="options" id="month"> Month
-                    </label>
-                    <label class="btn btn-default navbar-btn">
-                        <input type="radio" name="options" id="year"> Year
-                    </label>
-                </div>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-chevron-left"></span></button>
-                    <button type="button" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-calendar"></span></button>
-                    <button type="button" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-chevron-right"></span></button>
-                </div>
-                -->
+                <ul class="nav navbar-nav">
+                    <li><button class="btn btn-success navbar-btn" ng-click="clickNew()">NEW</button></li>
+                </ul>
+                <form class="navbar-form navbar-left" role="search">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search" ng-model="searchString">
+                    </div>
+                </form>
                 <ul class="nav navbar-nav navbar-right">
                     <!--<li ng-class="{ active: isActive('/login')}"><a href="#/login">Login</a></li>-->
                     <!--<li ng-class="{ active: {{projectDetailActiveBtn}}}" ng-show="{{projectDetailShowBtn}}"><a href="{{projectDetailUrl}}">{{ projectNameBtn }}</a></li>-->
@@ -71,8 +57,39 @@
             </div>
         </div>
     </nav>
-    <div class="view-container">
+    <section class="view-container">
         <div ng-view class="view-frame"></div>
-    </div>
+    </section>
+    <footer>
+        <a href="" ng-click="clearLocalStorage()">Clear LocalStorage</a>
+    </footer>
 </body>
 </html>
+
+<!--
+     <div class="input-group navbar-input-group col-xs-3">
+         <span class="input-group-addon "><span class="glyphicon glyphicon-search"></span></span>
+         <input type="text" ng-model="searchString" class="form-control" placeholder="Enter your search terms"/>
+     </div>
+     -->
+<!--
+<div class="btn-group" data-toggle="buttons">
+    <label class="btn btn-default navbar-btn active">
+        <input type="radio" name="options" id="day"> Day
+    </label>
+    <label class="btn btn-default navbar-btn">
+        <input type="radio" name="options" id="week"> Week
+    </label>
+    <label class="btn btn-default navbar-btn">
+        <input type="radio" name="options" id="month"> Month
+    </label>
+    <label class="btn btn-default navbar-btn">
+        <input type="radio" name="options" id="year"> Year
+    </label>
+</div>
+<div class="btn-group">
+    <button type="button" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-chevron-left"></span></button>
+    <button type="button" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-calendar"></span></button>
+    <button type="button" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-chevron-right"></span></button>
+</div>
+-->

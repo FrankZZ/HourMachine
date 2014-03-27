@@ -9,10 +9,6 @@ exports.create = function (req, res)
 	var body = req.body;
 	var params = req.params;
 
-	//var performObj = data = {"startDate" : "7113600","endDate" : "7113800","pauseTime" : "7083000","comment": "blablasdbPIET"}
-	// of
-	//var performObj = {"startDate" : body.startDate,"endDate" : body.endDate,"pauseTime" : body.pauseTime,"comment": body.comment}
-
 	var performObj = {startDate: body.startDate, endDate: body.endDate, pauseTime: body.pauseTime, comment: body.comment};
 	var perform = new Perform(performObj);
 
@@ -63,14 +59,12 @@ exports.get = function (req, res)
 {
     var params = req.params;
 
-
     Project.findById(params.project_id, function (err, project)
     {
         var task = project.tasks.id(params.task_id);
 
         if (!err && task)
         {
-
             var perform = task.performs.id(params.perform_id);
 
             res.send(200, perform);

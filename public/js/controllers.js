@@ -6,7 +6,7 @@ var hourMachineControllers = angular.module('hourMachineControllers', []);
 
 hourMachineControllers.controller('ProjectController',
     ["$scope","$routeParams","$rootScope","$modal",'$location',"ProjectService",
-function ($scope, $routeParams, $rootScope, $modal, $location, ProjectService) {
+function ($scope, $routeParams, $rootScope, $modal, $location, ProjectService){
     //For breadcrumb
     //--------------
     $rootScope.taskDetailBtnShow = false;
@@ -14,6 +14,11 @@ function ($scope, $routeParams, $rootScope, $modal, $location, ProjectService) {
     $rootScope.projectDetailBtnShow = false;
     $rootScope.projectDetailBtnActive = false;
     //--------------
+
+    if (localStorage) {
+        localStorage.urlpath = "/projects";
+    }
+
     ProjectService.list()
     .success(function(data) {
         $scope.projectList = data;
@@ -104,7 +109,9 @@ function ($scope, $routeParams, $rootScope, $modal, $location, ProjectDetailServ
     $rootScope.projectDetailBtnShow = true;
     $rootScope.projectDetailBtnActive = true;
     //--------------
-
+    if (localStorage) {
+        localStorage.urlpath = "/project/"+$routeParams.project_id+"/tasks";
+    }
 
     ProjectDetailService.list()
     .success(function(data) {
@@ -172,6 +179,9 @@ function ($scope, $routeParams, $rootScope, $modal, $location, ProjectDetailServ
         });
     };
     $scope.goDetail = function (task){
+        if (localStorage) {
+            localStorage.urlpath = "/project/"+ProjectDetailService.getCurrentProjectId()+"/task/"+task.id+"/performs";
+        }
         $location.path("/project/"+ProjectDetailService.getCurrentProjectId()+"/task/"+task.id+"/performs");
     };
 }]);
@@ -206,6 +216,11 @@ function ($scope, $routeParams, $rootScope, $modal, $location, TaskDetailService
     $rootScope.projectDetailBtnShow = true;
     $rootScope.projectDetailBtnActive = false;
     //--------------
+    if (localStorage) {
+        localStorage.urlpath = "/project/"+$routeParams.project_id+"/task/"+$routeParams.task_id/+"/performs";
+    }
+
+
     TaskDetailService.list()
         .success(function(data) {
             $scope.performList = data;
@@ -344,7 +359,10 @@ function ($scope, $routeParams, $rootScope, $modal, $location, TaskDetailService
         });
     };
     $scope.goDetail = function (perform){
-        //$location.path("/project/"+ProjectDetailService.getCurrentProjectId()+"/task/"+task._id+"/performs");
+//        if (localStorage) {
+//            localStorage.urlpath = "/project/"+ProjectDetailService.getCurrentProjectId()+"/task/"+task._id+"/performs";
+//        }
+//        $location.path("/project/"+ProjectDetailService.getCurrentProjectId()+"/task/"+task._id+"/performs");
     };
 
 }]);
@@ -352,6 +370,18 @@ function ($scope, $routeParams, $rootScope, $modal, $location, TaskDetailService
 hourMachineControllers.controller('MainController',
     ["$scope","$routeParams","$modal",'$location',
  function($scope, $routeParams, $modal, $location) {
+     /*
+      * check browser supports local storage
+      */
+     if (localStorage) {
+         if(!localStorage.urlpath){
+             localStorage.urlpath = "/projects";
+         }
+         $location.path(localStorage.urlpath);
+     }
+     $scope.clearLocalStorage= function () {
+         localStorage.clear();
+     };
      /*This is for activive menu button*/
 //    <li ng-class="{ active: isActive('/login')}"><a href="#/login">Login</a></li>
 //    $scope.isActive = function (viewLocation) {

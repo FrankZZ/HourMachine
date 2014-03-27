@@ -3,12 +3,12 @@
     <table class="table table-hover">
         <thead>
             <tr>
-                <th>Task</th>
-                <th>Total Hours</th>
+                <th>Task <a href="" class="glyphicon glyphicon-sort"ng-click="predicate = 'name'; reverse=!reverse"></a></th>
+                <th>Total Hours <a href="" class="glyphicon glyphicon-sort"ng-click="predicate = 'totalTimeString'; reverse=!reverse"></a></th>
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="task in taskList" >
+            <tr ng-repeat="task in taskList | searchForName:searchString | orderBy:predicate:reverse" >
                 <td ng-click="goDetail(task)">{{task.name }}</td>
                 <td ng-click="goDetail(task)">{{task.totalTimeString }}</td>
                 <td ng-click="editRow(task)"><span class="glyphicon glyphicon-pencil" ></span></td>
